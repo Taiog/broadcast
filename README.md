@@ -1,69 +1,74 @@
-# React + TypeScript + Vite
+# 🔐 UnniChat Broadcast
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema tipo SaaS para gerenciamento de conexões, contatos e mensagens com agendamento. Criado com foco em performance, escalabilidade e experiência do usuário.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologias utilizadas
 
-## Expanding the ESLint configuration
+- **[Vite](https://vitejs.dev/)** + **React** + **TypeScript**
+- **[Firebase](https://firebase.google.com/)** (Auth, Firestore, Functions)
+- **[Material UI (MUI)](https://mui.com/)** — Componentes modernos
+- **[Tailwind CSS](https://tailwindcss.com/)** — Estilização utilitária
+- **[React Hook Form](https://react-hook-form.com/)** + **[Zod](https://zod.dev/)** — Validação de formulários
+- **[React IMask](https://imask.js.org/react/)** — Máscaras de input
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧪 Funcionalidades
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- ✅ **Autenticação Firebase** com cadastro, login e logout
+- ✅ **CRUD de Conexões**
+- ✅ **CRUD de Contatos**
+- ✅ **Envio e agendamento de mensagens**
+- ✅ **Filtro de mensagens agendadas/enviadas**
+- ✅ **Atualização em tempo real com onSnapshot**
+- ✅ **Função agendada para envio automático de mensagens**
+- ✅ **Layout responsivo (3 colunas → 3 linhas em telas pequenas)**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## ⚙️ Como rodar localmente
+
+1. **Clone o repositório**
+
+```bash
+git clone https://github.com/seu-usuario/unnichat-dashboard.git
+cd unnichat-dashboard
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Instale as dependências**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+3. **Configure suas variáveis de ambiente**
+   Crie um arquivo .env baseado no .env.example:
+
+```bash
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=...
+VITE_FIREBASE_PROJECT_ID=...
+...
+```
+
+4. **Inicie o projeto**
+
+```bash
+npm run dev
+```
+
+## 🔥 Deploy das Firebase Functions
+
+As funções ficam em functions/src. Para fazer deploy:
+
+```bash
+firebase deploy --only functions
+```
+
+## 📝 Notas sobre agendamento de mensagens
+
+A função updateScheduledMessages roda a cada 1 minuto e altera o status de mensagens agendadas para enviada, respeitando a data/hora programada (scheduledAt).
+
+Ela usa collectionGroup("messages") para buscar em todos os caminhos.
