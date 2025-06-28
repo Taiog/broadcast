@@ -10,7 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import { contactSchema, type ContactFormData } from "../../schemas/contactSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { matchIsValidTel, MuiTelInput } from 'mui-tel-input'
+import { MaskedTextField } from "./MaskedTextField";
 
 interface Props {
     anchorEl: HTMLElement | null;
@@ -31,7 +31,6 @@ export function ContactFormPopover({
 
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
         reset,
@@ -51,8 +50,8 @@ export function ContactFormPopover({
     }, [initialData, reset]);
 
     const handleClose = () => {
-        reset();
         onClose();
+        reset();
     };
 
     const handleFormSubmit = (data: ContactFormData) => {
@@ -74,28 +73,30 @@ export function ContactFormPopover({
                     {mode === "create" ? "Novo Contato" : "Editar Contato"}
                 </Typography>
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
-                    <TextField
-                        label="Nome"
-                        fullWidth
-                        margin="dense"
-                        size="small"
-                        {...register("name")}
-                        error={!!errors.name}
-                        helperText={errors.name?.message}
-                    />
+                    <Controller name="name" control={control} render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Nome"
+                            fullWidth
+                            margin="dense"
+                            size="small"
+                            error={!!errors.name}
+                            helperText={errors.name?.message}
+                        />
+                    )} />
                     <Controller
-                        name="phone"
+                        name={'phone'}
                         control={control}
-                        rules={{ validate: (value) => matchIsValidTel(value, { onlyCountries: ['BR'] }) }}
-                        render={({ field: { ref: fieldRef, value, ...fieldProps }, fieldState }) => (
-                            <MuiTelInput
-                                {...fieldProps}
-                                value={value ?? ''}
-                                inputRef={fieldRef}
-                                onlyCountries={["BR"]}
-                                defaultCountry="BR"
-                                helperText={fieldState.invalid ? "Telefone inválido" : ""}
-                                error={fieldState.invalid}
+                        render={({ field }) => (
+                            <MaskedTextField
+                                {...field}
+                                mask="(00) 0 0000-0000"
+                                unmask={true}
+                                onAccept={(value: string) => field.onChange(value)}
+                                overwrite
+                                label={"Telefone"}
+                                error={!!errors.phone}
+                                helperText={errors.phone?.message}
                             />
                         )}
                     />

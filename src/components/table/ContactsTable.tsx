@@ -41,7 +41,6 @@ export function ContactsTable({ clientId, connectionId }: Props) {
     };
 
     const handleOpenEdit = (event: React.MouseEvent<HTMLButtonElement>, contact: Contact) => {
-        console.log(contact)
         setEditContact(contact);
         setMode("edit");
         setAnchorEl(event.currentTarget);
@@ -49,7 +48,6 @@ export function ContactsTable({ clientId, connectionId }: Props) {
 
     const handleClose = () => {
         setAnchorEl(null);
-        setEditContact(null);
     };
 
     const handleSubmit = async (data: { name: string; phone: string }) => {

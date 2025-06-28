@@ -57,7 +57,6 @@ export function MessagesTable({ clientId, connectionId }: Props) {
 
     const closePopover = () => {
         setAnchorEl(null);
-        setEditData(null);
     };
 
     const handleSubmit = async (data: MessageFormData) => {

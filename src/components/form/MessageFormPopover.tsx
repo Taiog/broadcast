@@ -39,7 +39,6 @@ export function MessageFormPopover({
     const open = Boolean(anchorEl);
 
     const {
-        register,
         control,
         handleSubmit,
         reset,
@@ -63,8 +62,8 @@ export function MessageFormPopover({
     }, [initialData, reset]);
 
     const handleClose = () => {
-        reset();
         onClose();
+        reset()
     };
 
     const handleFormSubmit = (data: MessageFormData) => {
@@ -94,15 +93,21 @@ export function MessageFormPopover({
                 </Typography>
 
                 <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                    <TextField
-                        label="Mensagem"
-                        multiline
-                        minRows={3}
-                        fullWidth
-                        margin="dense"
-                        {...register("text")}
-                        error={!!errors.text}
-                        helperText={errors.text?.message}
+                    <Controller
+                        name="text"
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Mensagem"
+                                multiline
+                                minRows={3}
+                                fullWidth
+                                margin="dense"
+                                error={!!errors.text}
+                                helperText={errors.text?.message}
+                            />
+                        )}
                     />
 
                     <Controller
@@ -134,9 +139,10 @@ export function MessageFormPopover({
                         name="scheduledAt"
                         control={control}
                         render={({ field }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-BR">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                                 <DateTimePicker
                                     label="Agendar para"
+                                    timeSteps={{ minutes: 1 }}
                                     value={dayjs(field.value)}
                                     onChange={(date) => field.onChange(date?.toDate())}
                                     slotProps={{

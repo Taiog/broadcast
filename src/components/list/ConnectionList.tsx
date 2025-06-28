@@ -37,6 +37,7 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
 
     const handleDelete = async (id: string) => {
         await connectionService.deleteConnection(clientId, id);
+        onSelect(null)
     };
 
     const handleEditStart = (id: string, name: string) => {
@@ -54,7 +55,7 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
     if (error) return <Box color="error.main">{error}</Box>;
 
     return (
-        <Column title="Conexões">
+        <Column title="Selecione uma conexão">
             <Box display="flex" m={2} gap={'10px'}>
                 <TextField
                     label="Nova Conexão"
