@@ -7,26 +7,19 @@ export function useGetConnections(clientId: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchConnections() {
+  useEffect(() => {
+    if (!clientId) return;
+
     setLoading(true);
     setError(null);
-    try {
-      const data = await connectionService.getConnections(clientId);
-      setConnections(data);
-    } catch (err) {
-      console.error(err);
-      setError("Erro ao carregar conexões");
-    } finally {
-      setLoading(false);
-    }
-  }
 
-  useEffect(() => {
-    if (clientId) {
-      fetchConnections();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const unsubscribe = connectionService.getConnections(clientId, (data) => {
+      setConnections(data);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, [clientId]);
 
-  return { connections, loading, error, fetchConnections };
+  return { connections, loading, error };
 }

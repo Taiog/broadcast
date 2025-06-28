@@ -10,13 +10,13 @@ function LogoutButton() {
 
     return (
         <Button
-            variant="outlined"
-            color="error"
+            variant="text"
+            color="inherit"
             onClick={handleLogout}
             disabled={loading}
             className="mt-4"
         >
-            {"Sair"}
+            {"Logout"}
         </Button>
     );
 }

@@ -8,20 +8,23 @@ import {
     ListItemText,
     IconButton,
     CircularProgress,
+    ListItemButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { useGetConnections } from "../../hooks/connections/useGetConnections";
 import * as connectionService from "../../services/connectionService";
-import Screen from "../screen/Screen";
+import Column from "../screen/Column";
 
 interface ConnectionListProps {
     clientId: string;
+    onSelect: (id: string | null) => void;
+    selectedConnectionId: string | null;
 }
 
-export function ConnectionList({ clientId }: ConnectionListProps) {
-    const { connections, loading, error, fetchConnections } = useGetConnections(clientId);
+export function ConnectionList({ clientId, onSelect, selectedConnectionId }: ConnectionListProps) {
+    const { connections, loading, error } = useGetConnections(clientId);
     const [newName, setNewName] = useState("");
     const [editId, setEditId] = useState<string | null>(null);
     const [editName, setEditName] = useState("");
@@ -30,12 +33,10 @@ export function ConnectionList({ clientId }: ConnectionListProps) {
         if (!newName.trim()) return;
         await connectionService.addConnection(clientId, newName.trim());
         setNewName("");
-        fetchConnections();
     };
 
     const handleDelete = async (id: string) => {
         await connectionService.deleteConnection(clientId, id);
-        fetchConnections();
     };
 
     const handleEditStart = (id: string, name: string) => {
@@ -48,61 +49,68 @@ export function ConnectionList({ clientId }: ConnectionListProps) {
         await connectionService.updateConnection(clientId, editId, { name: editName.trim() });
         setEditId(null);
         setEditName("");
-        fetchConnections();
     };
 
     if (error) return <Box color="error.main">{error}</Box>;
 
     return (
-        <Screen>
-            <Box width={'500px'}>
-                <Box display="flex" mb={2}>
-                    <TextField
-                        label="Nova Conexão"
-                        value={newName}
-                        onChange={(e) => setNewName(e.target.value)}
-                        fullWidth
-                    />
-                    <Button variant="contained" onClick={handleAdd} disabled={!newName.trim()}>
-                        Adicionar
-                    </Button>
-                </Box>
+        <Column title="Conexões">
+            <Box display="flex" m={2} gap={'10px'}>
+                <TextField
+                    label="Nova Conexão"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    fullWidth
+                />
+                <Button variant="contained" onClick={handleAdd} disabled={!newName.trim()}>
+                    Adicionar
+                </Button>
+            </Box>
 
-                {loading ? <CircularProgress /> : <List sx={{ bgcolor: 'HighlightText' }}>
-                    {connections.map(({ id, name }) => (
-                        <ListItem key={id} sx={{ paddingRight: '16px' }} secondaryAction={
-                            <>
-                                {editId === id ? (
-                                    <>
-                                        <Button onClick={handleEditSave}>Salvar</Button>
-                                        <Button onClick={() => setEditId(null)}>Cancelar</Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <IconButton onClick={() => handleEditStart(id!, name)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton onClick={() => handleDelete(id!)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </>
-                                )}
-                            </>
-                        }>
+            {loading ? <CircularProgress /> : <List disablePadding>
+                {connections.map(({ id, name }) => (
+                    <ListItem key={id} sx={{ paddingRight: '16px' }} secondaryAction={
+                        <>
+                            {editId === id ? (
+                                <>
+                                    <Button onClick={handleEditSave}>Salvar</Button>
+                                    <Button onClick={() => setEditId(null)}>Cancelar</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <IconButton onClick={() => handleEditStart(id!, name)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton onClick={() => handleDelete(id!)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </>
+                            )}
+                        </>
+                    }>
+                        <ListItemButton selected={id === selectedConnectionId}
+                            sx={{ paddingRight: '80px' }}
+                            onClick={() => onSelect(id ?? null)}>
                             {editId === id ? (
                                 <TextField
                                     value={editName}
+                                    variant="standard"
                                     onChange={(e) => setEditName(e.target.value)}
-                                    fullWidth
                                     autoFocus
+                                    slotProps={{
+                                        htmlInput: { style: { padding: '4px' } },
+                                        input: {
+                                            disableUnderline: true,
+                                        },
+                                    }}
                                 />
                             ) : (
                                 <ListItemText primary={name} className="text-gray-800" />
                             )}
-                        </ListItem>
-                    ))}
-                </List>}
-            </Box>
-        </Screen>
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>}
+        </Column>
     );
 }

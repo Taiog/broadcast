@@ -2,26 +2,33 @@ import { db } from "./firebase";
 import {
   collection,
   addDoc,
-  getDocs,
   doc,
   updateDoc,
   deleteDoc,
   query,
   orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import type { Connection } from "../types/types";
 
 const CONNECTIONS_COLLECTION = "connections";
 
-export async function getConnections(clientId: string): Promise<Connection[]> {
+export function getConnections(
+  clientId: string,
+  callback: (contacts: Connection[]) => void
+): () => void {
   const colRef = collection(db, "clients", clientId, CONNECTIONS_COLLECTION);
-  const q = query(colRef, orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
+  const connectionQuery = query(colRef, orderBy("createdAt", "desc"));
 
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...(doc.data() as Connection),
-  }));
+  const unsubscribe = onSnapshot(connectionQuery, (snapshot) => {
+    const data: Connection[] = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Connection[];
+    callback(data);
+  });
+
+  return unsubscribe;
 }
 
 export async function addConnection(clientId: string, name: string) {

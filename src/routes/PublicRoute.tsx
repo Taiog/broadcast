@@ -6,7 +6,7 @@ const PublicRoute = () => {
 
     if (loading) return <div className="text-center mt-10">Carregando...</div>;
 
-    return !user ? <Outlet /> : <Navigate to="/dashboard" replace />;
+    return !user ? <Outlet /> : <Navigate to="/broadcast" replace />;
 };
 
 export default PublicRoute;
