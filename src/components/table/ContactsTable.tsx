@@ -10,6 +10,7 @@ import {
     Box,
     IconButton,
     Button,
+    Tooltip,
 } from "@mui/material";
 import { useContacts } from "../../hooks/contacts/useGetContacts";
 import Column from "../screen/Column";
@@ -87,7 +88,21 @@ export function ContactsTable({ clientId, connectionId }: Props) {
                         {<TableBody>
                             {contacts.map((contact) => (
                                 <TableRow key={contact.id}>
-                                    <TableCell>{contact.name}</TableCell>
+                                    <TableCell>
+                                        <Tooltip title={contact.name}>
+                                            <Typography
+                                                noWrap
+                                                sx={{
+                                                    maxWidth: 200,
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            >
+                                                {contact.name.length > 30 ? contact.name.slice(0, 30) + "..." : contact.name}
+                                            </Typography>
+                                        </Tooltip>
+                                    </TableCell>
                                     <TableCell>{formatPhone(contact.phone)}</TableCell>
                                     <TableCell align="right">
                                         <IconButton

@@ -9,6 +9,7 @@ import {
     IconButton,
     CircularProgress,
     ListItemButton,
+    Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -89,9 +90,11 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
                             )}
                         </>
                     }>
-                        <ListItemButton selected={id === selectedConnectionId}
+                        <ListItemButton
+                            selected={id === selectedConnectionId}
                             sx={{ paddingRight: '80px' }}
-                            onClick={() => onSelect(id ?? null)}>
+                            onClick={() => onSelect(id ?? null)}
+                        >
                             {editId === id ? (
                                 <TextField
                                     value={editName}
@@ -106,7 +109,15 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
                                     }}
                                 />
                             ) : (
-                                <ListItemText primary={name} className="text-gray-800" />
+                                <Tooltip title={name}>
+                                    <ListItemText
+                                        primary={
+                                            <span className="block max-w-[250px] truncate text-gray-800">
+                                                {name}
+                                            </span>
+                                        }
+                                    />
+                                </Tooltip>
                             )}
                         </ListItemButton>
                     </ListItem>

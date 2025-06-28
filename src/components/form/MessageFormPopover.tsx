@@ -101,6 +101,7 @@ export function MessageFormPopover({
                                 label="Mensagem"
                                 multiline
                                 minRows={3}
+                                maxRows={10}
                                 fullWidth
                                 margin="dense"
                                 error={!!errors.text}

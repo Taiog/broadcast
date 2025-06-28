@@ -126,7 +126,21 @@ export function MessagesTable({ clientId, connectionId }: Props) {
 
                                     return (
                                         <TableRow key={msg.id}>
-                                            <TableCell width={'40%'}>{msg.text}</TableCell>
+                                            <TableCell width={'40%'}>
+                                                <Tooltip title={msg.text}>
+                                                    <Typography
+                                                        noWrap
+                                                        sx={{
+                                                            maxWidth: 200,
+                                                            overflow: "hidden",
+                                                            textOverflow: "ellipsis",
+                                                            whiteSpace: "nowrap",
+                                                        }}
+                                                    >
+                                                        {msg.text.length > 30 ? msg.text.slice(0, 30) + "..." : msg.text}
+                                                    </Typography>
+                                                </Tooltip>
+                                            </TableCell>
                                             <TableCell>
                                                 {first}
                                                 {rest.length > 0 && (
