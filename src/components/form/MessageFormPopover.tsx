@@ -11,7 +11,6 @@ import { type Contact } from "../../types/types";
 import { type Message } from "../../types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
-import 'dayjs/locale/pt-BR';
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { messageSchema, type MessageFormData } from "../../schemas/messageSchema";
