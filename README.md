@@ -1,4 +1,4 @@
-# 🔐 UnniChat Broadcast
+# 🔐 Broadcast
 
 Sistema tipo SaaS para gerenciamento de conexões, contatos e mensagens com agendamento. Criado com foco em performance, escalabilidade e experiência do usuário.
 
@@ -33,8 +33,8 @@ Sistema tipo SaaS para gerenciamento de conexões, contatos e mensagens com agen
 1. **Clone o repositório**
 
 ```bash
-git clone https://github.com/seu-usuario/unnichat-dashboard.git
-cd unnichat-dashboard
+git clone https://github.com/Taiog/broadcast.git
+cd broadcast
 ```
 
 2. **Instale as dependências**
