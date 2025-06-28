@@ -3,7 +3,7 @@ import Login from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import Register from "../pages/Register";
-import LogoutButton from "../components/LogoutButton";
+import { ConnectionsPage } from "../pages/Connections";
 
 const AppRoutes = () => {
   return (
@@ -14,7 +14,7 @@ const AppRoutes = () => {
       </Route>
 
       <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<div><LogoutButton /></div>} />
+        <Route path="/connections" element={<ConnectionsPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />
