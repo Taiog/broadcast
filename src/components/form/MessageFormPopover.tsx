@@ -145,6 +145,7 @@ export function MessageFormPopover({
                                     timeSteps={{ minutes: 1 }}
                                     value={dayjs(field.value)}
                                     onChange={(date) => field.onChange(date?.toDate())}
+                                    disablePast={true}
                                     slotProps={{
                                         textField: {
                                             fullWidth: true,
