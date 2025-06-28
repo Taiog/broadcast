@@ -26,6 +26,7 @@ import { MessageFormPopover } from "../form/MessageFormPopover";
 import { useContacts } from "../../hooks/contacts/useGetContacts";
 import Column from "../screen/Column";
 import { useMessages } from "../../hooks/messages/useGetMessages";
+import { removeSecondsFromDate } from "../../utils/removeSecondsFromDate";
 
 interface Props {
     clientId: string;
@@ -63,10 +64,12 @@ export function MessagesTable({ clientId, connectionId }: Props) {
         if (editData) {
             await updateMessage(clientId, connectionId, editData.id, {
                 ...data,
+                scheduledAt: removeSecondsFromDate(data.scheduledAt),
             });
         } else {
             await createMessage(clientId, connectionId, {
                 ...data,
+                scheduledAt: removeSecondsFromDate(data.scheduledAt),
                 status: data.status || 'agendada'
             });
         }

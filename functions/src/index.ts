@@ -1,17 +1,8 @@
 import { setGlobalOptions } from "firebase-functions";
-
+import { updateScheduledMessages } from "./schedule/updateScheduledMessages";
+import { onUserCreate } from "./triggers/onUserCreate";
 setGlobalOptions({ maxInstances: 3 });
 
-import * as functions from "firebase-functions/v1";
-import * as admin from "firebase-admin";
+export { onUserCreate };
 
-admin.initializeApp();
-
-export const onUserCreate = functions.auth.user().onCreate(async (user) => {
-  const db = admin.firestore();
-
-  return db.collection("clients").doc(user.uid).set({
-    email: user.email,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-  });
-});
+export { updateScheduledMessages };
