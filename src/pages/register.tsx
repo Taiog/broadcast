@@ -3,7 +3,7 @@ import { Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Screen from "../components/screen/screen-temp";
+import Screen from "../components/screen/screen";
 import FormTitle from "../components/form/form-title";
 import FormInput from "../components/form/form-input";
 import PasswordInput from "../components/form/password-input";

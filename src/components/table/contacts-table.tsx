@@ -13,7 +13,7 @@ import {
     Tooltip,
 } from "@mui/material";
 import { useContacts, type Contact } from "../../apps/contacts/use-contacts";
-import Column from "../screen/column-temp";
+import Column from "../screen/column";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import { addContact, deleteContact, updateContact } from "../../apps/contacts/contact.model";
