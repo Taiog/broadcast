@@ -4,7 +4,7 @@ import {
     ListItemButton,
     ListItemText,
 } from "@mui/material";
-import Column from "../screen/Column";
+import Column from "../screen/column";
 import { ArrowRight } from "@mui/icons-material";
 
 interface MenuListProps {
@@ -12,7 +12,8 @@ interface MenuListProps {
     onSelect: (option: "contacts" | "messages") => void;
 }
 
-export function MenuList({ selected, onSelect }: MenuListProps) {
+function MenuList(props: MenuListProps) {
+    const { onSelect, selected } = props
     return (
         <Column title="Informações">
             <List disablePadding>
@@ -39,3 +40,5 @@ export function MenuList({ selected, onSelect }: MenuListProps) {
         </Column>
     );
 }
+
+export default MenuList

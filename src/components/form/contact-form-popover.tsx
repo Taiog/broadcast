@@ -5,12 +5,12 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { type Contact } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
-import { contactSchema, type ContactFormData } from "../../schemas/contactSchema";
+import { contactSchema, type ContactFormData } from "../../schemas/contact-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { MaskedTextField } from "./MaskedTextField";
+import { MaskedTextField } from "./masked-text-field";
+import type { Contact } from "../../apps/contacts/use-contacts";
 
 interface Props {
     anchorEl: HTMLElement | null;
@@ -20,13 +20,8 @@ interface Props {
     initialData?: Contact | null;
 }
 
-export function ContactFormPopover({
-    anchorEl,
-    onClose,
-    onSubmit,
-    mode = "create",
-    initialData,
-}: Props) {
+function ContactFormPopover(props: Props) {
+    const { anchorEl, onClose, onSubmit, initialData, mode } = props
     const open = Boolean(anchorEl);
 
     const {
@@ -114,3 +109,5 @@ export function ContactFormPopover({
         </Popover>
     );
 }
+
+export default ContactFormPopover

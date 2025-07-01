@@ -1,9 +1,9 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-import LogoutButton from "../LogoutButton";
-import { useAuth } from "../../hooks/useAuth";
+import LogoutButton from "../logout-button";
+import { useAuth } from "../../hooks/use-auth";
 
-export function Header() {
+function Header() {
     const { user } = useAuth()
     return (
         <AppBar position="static" color="primary">
@@ -14,3 +14,5 @@ export function Header() {
         </AppBar>
     );
 }
+
+export default Header

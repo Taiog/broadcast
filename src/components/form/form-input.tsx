@@ -7,7 +7,8 @@ interface FormInputProps extends Omit<OutlinedInputProps, "error"> {
     error?: FieldError;
 }
 
-function FormInput({ label, type = "text", error, ...props }: FormInputProps) {
+function FormInput(props: FormInputProps) {
+    const { label, type, error, ...rest } = props
     return (
         <FormControl variant="outlined">
             <InputLabel htmlFor="outlined-adornment-input" error={!!error}>{label}</InputLabel>
@@ -18,7 +19,7 @@ function FormInput({ label, type = "text", error, ...props }: FormInputProps) {
                 aria-describedby="outlined-error-helper-text"
                 fullWidth
                 error={!!error}
-                {...props}
+                {...rest}
             />
             <FormHelperText id="outlined-error-helper-text" error={!!error}>{error?.message}</FormHelperText>
         </FormControl>

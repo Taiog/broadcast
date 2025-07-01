@@ -12,21 +12,21 @@ import {
     Button,
     Tooltip,
 } from "@mui/material";
-import { useContacts } from "../../hooks/contacts/useGetContacts";
-import Column from "../screen/Column";
+import { useContacts, type Contact } from "../../apps/contacts/use-contacts";
+import Column from "../screen/column";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
-import type { Contact } from "../../types/types";
-import { addContact, deleteContact, updateContact } from "../../services/contactService";
-import { ContactFormPopover } from "../form/ContactFormPopover";
-import { formatPhone } from "../../utils/formatPhone";
+import { addContact, deleteContact, updateContact } from "../../apps/contacts/contact.model";
+import { formatPhone } from "../../utils/format-phone";
+import ContactFormPopover from "../form/contact-form-popover";
 
 interface Props {
     clientId: string;
     connectionId: string;
 }
 
-export function ContactsTable({ clientId, connectionId }: Props) {
+function ContactsTable(props: Props) {
+    const { clientId, connectionId } = props
     const { contacts, loading, error } = useContacts(clientId, connectionId);
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -134,3 +134,5 @@ export function ContactsTable({ clientId, connectionId }: Props) {
         </Column>
     );
 }
+
+export default ContactsTable

@@ -5,7 +5,8 @@ interface SubmitButtonProps {
     text: string;
 }
 
-const SubmitButton = ({ loading, text }: SubmitButtonProps) => {
+function SubmitButton(props: SubmitButtonProps) {
+    const { loading, text } = props
     return (
         <Button
             type="submit"

@@ -14,9 +14,9 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { useGetConnections } from "../../hooks/connections/useGetConnections";
-import * as connectionService from "../../services/connectionService";
-import Column from "../screen/Column";
+import { useGetConnections } from "../../apps/connections/use-connections";
+import Column from "../screen/column";
+import { addConnection, deleteConnection, updateConnection } from "../../apps/connections/connection.model";
 
 interface ConnectionListProps {
     clientId: string;
@@ -24,7 +24,8 @@ interface ConnectionListProps {
     selectedConnectionId: string | null;
 }
 
-export function ConnectionList({ clientId, onSelect, selectedConnectionId }: ConnectionListProps) {
+function ConnectionList(props: ConnectionListProps) {
+    const { clientId, onSelect, selectedConnectionId } = props
     const { connections, loading, error } = useGetConnections(clientId);
     const [newName, setNewName] = useState("");
     const [editId, setEditId] = useState<string | null>(null);
@@ -32,12 +33,12 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
 
     const handleAdd = async () => {
         if (!newName.trim()) return;
-        await connectionService.addConnection(clientId, newName.trim());
+        await addConnection(clientId, newName.trim());
         setNewName("");
     };
 
     const handleDelete = async (id: string) => {
-        await connectionService.deleteConnection(clientId, id);
+        await deleteConnection(clientId, id);
         onSelect(null)
     };
 
@@ -48,7 +49,7 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
 
     const handleEditSave = async () => {
         if (!editName.trim() || !editId) return;
-        await connectionService.updateConnection(clientId, editId, { name: editName.trim() });
+        await updateConnection(clientId, editId, { name: editName.trim() });
         setEditId(null);
         setEditName("");
     };
@@ -126,3 +127,5 @@ export function ConnectionList({ clientId, onSelect, selectedConnectionId }: Con
         </Column>
     );
 }
+
+export default ConnectionList

@@ -2,7 +2,7 @@ import {
     onAuthStateChanged,
     type User as FirebaseUser,
 } from "firebase/auth";
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useEffect, useState, type PropsWithChildren } from "react";
 import { auth } from "../services/firebase";
 
 interface AuthContextType {
@@ -15,7 +15,8 @@ const AuthContext = createContext<AuthContextType>({
     loading: true,
 });
 
-const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+function AuthContextProvider(props: PropsWithChildren) {
+    const { children } = props
     const [user, setUser] = useState<FirebaseUser | null>(null);
     const [loading, setLoading] = useState(true);
 

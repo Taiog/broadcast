@@ -8,7 +8,8 @@ interface PasswordInputProps extends Omit<OutlinedInputProps, "error"> {
     error?: FieldError;
 }
 
-function PasswordInput({ label = "Senha", error, ...props }: PasswordInputProps) {
+function PasswordInput(props: PasswordInputProps) {
+    const { label, error, ...rest } = props
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -21,7 +22,7 @@ function PasswordInput({ label = "Senha", error, ...props }: PasswordInputProps)
                 aria-describedby="outlined-error-helper-text"
                 fullWidth
                 error={!!error}
-                {...props}
+                {...rest}
                 endAdornment={
                     <InputAdornment position="end">
                         <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end">

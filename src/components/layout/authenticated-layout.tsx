@@ -1,11 +1,10 @@
 import { type PropsWithChildren } from "react";
 import { Grid } from "@mui/material";
-import { Header } from "../screen/Header";
-import Screen from "../screen/Screen";
+import Header from "../screen/header";
+import Screen from "../screen/screen";
 
-
-
-export function AuthenticatedLayout({ children }: PropsWithChildren) {
+function AuthenticatedLayout(props: PropsWithChildren) {
+    const { children } = props
     return (
         <Screen className="h-dvh flex-col">
             <Header />
@@ -15,3 +14,5 @@ export function AuthenticatedLayout({ children }: PropsWithChildren) {
         </Screen>
     );
 }
+
+export default AuthenticatedLayout

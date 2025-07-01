@@ -15,25 +15,25 @@ import {
     Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { type Message } from "../../types/types";
-import { deleteMessage, updateMessage, createMessage } from "../../services/messageService";
+import { deleteMessage, updateMessage, createMessage, type Message } from "../../apps/messages/message.model";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import dayjs from "dayjs";
-import type { MessageFormData } from "../../schemas/messageSchema";
-import { MessageFormPopover } from "../form/MessageFormPopover";
-import { useContacts } from "../../hooks/contacts/useGetContacts";
-import Column from "../screen/Column";
-import { useMessages } from "../../hooks/messages/useGetMessages";
-import { removeSecondsFromDate } from "../../utils/removeSecondsFromDate";
+import type { MessageFormData } from "../../schemas/message-schema";
+import { MessageFormPopover } from "../form/message-form-popover";
+import { useContacts } from "../../apps/contacts/use-contacts";
+import Column from "../screen/column";
+import { useMessages } from "../../apps/messages/use-messages";
+import { removeSecondsFromDate } from "../../utils/remove-seconds-from-date";
 
 interface Props {
     clientId: string;
     connectionId: string;
 }
 
-export function MessagesTable({ clientId, connectionId }: Props) {
+function MessagesTable(props: Props) {
+    const { clientId, connectionId } = props
     const [filter, setFilter] = useState<"all" | "agendada" | "enviada">("all");
 
     const { contacts } = useContacts(clientId, connectionId);
@@ -180,3 +180,5 @@ export function MessagesTable({ clientId, connectionId }: Props) {
         </Column>
     );
 }
+
+export default MessagesTable

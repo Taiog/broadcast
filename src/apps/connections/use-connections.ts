@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import * as connectionService from "../../services/connectionService";
-import type { Connection } from "../../types/types";
+import { getConnections, type Connection } from "./connection.model";
 
 export function useGetConnections(clientId: string) {
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -13,7 +12,7 @@ export function useGetConnections(clientId: string) {
     setLoading(true);
     setError(null);
 
-    const unsubscribe = connectionService.getConnections(clientId, (data) => {
+    const unsubscribe = getConnections(clientId, (data) => {
       setConnections(data);
       setLoading(false);
     });

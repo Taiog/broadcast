@@ -4,7 +4,8 @@ interface ErrorMessageProps {
     message: string | null;
 }
 
-const ErrorMessage = ({ message }: ErrorMessageProps) => {
+function ErrorMessage(props: ErrorMessageProps) {
+    const { message } = props
     if (!message) return null;
 
     return (

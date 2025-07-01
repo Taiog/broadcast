@@ -15,7 +15,6 @@ export function useLogin() {
       return { success: true };
     } catch (err) {
       const firebaseError = err as FirebaseError;
-      console.log(firebaseError.message.includes("invalid-credential"));
       setError(
         firebaseError.message.includes("invalid-credential")
           ? "Credenciais inválidas, tente novamente!"

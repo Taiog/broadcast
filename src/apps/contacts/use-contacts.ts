@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
-import * as contactService from "../../services/contactService";
-import type { Contact } from "../../types/types";
+import { getContacts } from "./contact.model";
+
+export interface Contact {
+  id?: string;
+  name: string;
+  phone: string;
+  createdAt?: Date;
+}
 
 export function useContacts(clientId: string, connectionId: string | null) {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -13,7 +19,7 @@ export function useContacts(clientId: string, connectionId: string | null) {
     setLoading(true);
     setError(null);
 
-    const unsubscribe = contactService.getContacts(clientId, connectionId, (data) => {
+    const unsubscribe = getContacts(clientId, connectionId, (data) => {
       setContacts(data);
       setLoading(false);
     });

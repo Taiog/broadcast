@@ -3,14 +3,14 @@ import { Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Screen from "../components/screen/Screen";
-import FormTitle from "../components/form/FormTitle";
-import FormInput from "../components/form/FormInput";
-import PasswordInput from "../components/form/PasswordInput";
-import ErrorMessage from "../components/form/ErrorMessage";
-import SubmitButton from "../components/form/SubmitButton";
-import { registerSchema, type RegisterFormData } from "../schemas/registerSchema";
-import { useRegister } from "../hooks/useRegister";
+import Screen from "../components/screen/screen";
+import FormTitle from "../components/form/form-title";
+import FormInput from "../components/form/form-input";
+import PasswordInput from "../components/form/password-input";
+import ErrorMessage from "../components/form/error-message";
+import SubmitButton from "../components/form/submit-button";
+import { registerSchema, type RegisterFormData } from "../schemas/register-schema";
+import { useRegister } from "../hooks/use-register";
 
 function Register() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function Register() {
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
                     <FormTitle title="Criar conta" subtitle="Registre-se com seu email" />
                     <FormInput {...register("email")} label="Email" error={errors.email} />
-                    <PasswordInput {...register("password")} error={errors.password} />
+                    <PasswordInput {...register("password")} error={errors.password} label="Senha" />
                     <ErrorMessage message={error} />
                     <SubmitButton loading={loading} text="Cadastrar" />
                     <Typography variant="body2" className="text-center text-gray-600">

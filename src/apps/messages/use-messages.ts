@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import * as messageService from "../../services/messageService";
-import type { Message } from "../../types/types";
+import { getMessages, type Message } from "./message.model";
 
 export function useMessages(
   clientId: string,
@@ -17,15 +16,10 @@ export function useMessages(
     setLoading(true);
     setError(null);
 
-    const unsubscribe = messageService.getMessages(
-      clientId,
-      connectionId,
-      filter,
-      (data: Message[]) => {
-        setMessages(data);
-        setLoading(false);
-      }
-    );
+    const unsubscribe = getMessages(clientId, connectionId, filter, (data: Message[]) => {
+      setMessages(data);
+      setLoading(false);
+    });
 
     return () => unsubscribe();
   }, [clientId, connectionId, filter]);

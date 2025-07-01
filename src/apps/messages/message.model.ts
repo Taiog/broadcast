@@ -10,8 +10,15 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "./firebase";
-import type { Message } from "../types/types";
+import { db } from "../../services/firebase";
+
+export interface Message {
+  id: string;
+  text: string;
+  scheduledAt: Date;
+  status: "agendada" | "enviada";
+  contactIds: string[];
+}
 
 export function getMessages(
   clientId: string,

@@ -8,8 +8,8 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "./firebase";
-import type { Contact } from "../types/types";
+import { db } from "../../services/firebase";
+import type { Contact } from "./use-contacts";
 
 export function getContacts(
   clientId: string,

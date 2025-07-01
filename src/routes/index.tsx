@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/Login";
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
-import Register from "../pages/Register";
-import { BroadcastPage } from "../pages/BroadcastPage";
+import Login from "../pages/login";
+import PrivateRoute from "./private-route";
+import PublicRoute from "./public-route";
+import Register from "../pages/register";
+import BroadcastPage from "../pages/broadcast-page";
 
-const AppRoutes = () => {
+function AppRoutes() {
   return (
     <Routes>
       <Route element={<PublicRoute />}>

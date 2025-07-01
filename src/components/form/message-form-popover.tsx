@@ -7,14 +7,14 @@ import {
     Autocomplete,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import { type Contact } from "../../types/types";
-import { type Message } from "../../types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { messageSchema, type MessageFormData } from "../../schemas/messageSchema";
+import { messageSchema, type MessageFormData } from "../../schemas/message-schema";
 import { useEffect } from "react";
+import type { Contact } from "../../apps/contacts/use-contacts";
+import type { Message } from "../../apps/messages/message.model";
 
 interface Props {
     anchorEl: HTMLElement | null;
@@ -27,14 +27,8 @@ interface Props {
 
 
 
-export function MessageFormPopover({
-    anchorEl,
-    onClose,
-    onSubmit,
-    contacts,
-    mode = "create",
-    initialData,
-}: Props) {
+export function MessageFormPopover(props: Props) {
+    const { anchorEl, contacts, onClose, onSubmit, initialData, mode } = props
     const open = Boolean(anchorEl);
 
     const {

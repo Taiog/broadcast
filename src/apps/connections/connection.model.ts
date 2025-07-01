@@ -1,4 +1,4 @@
-import { db } from "./firebase";
+import { db } from "../../services/firebase";
 import {
   collection,
   addDoc,
@@ -9,9 +9,14 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import type { Connection } from "../types/types";
 
 const CONNECTIONS_COLLECTION = "connections";
+
+export interface Connection {
+  id?: string;
+  name: string;
+  createdAt?: Date;
+}
 
 export function getConnections(
   clientId: string,
