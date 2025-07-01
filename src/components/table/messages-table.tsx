@@ -23,7 +23,7 @@ import dayjs from "dayjs";
 import type { MessageFormData } from "../../schemas/message-schema";
 import { MessageFormPopover } from "../form/message-form-popover";
 import { useContacts } from "../../apps/contacts/use-contacts";
-import Column from "../screen/column";
+import Column from "../screen/column-temp";
 import { useMessages } from "../../apps/messages/use-messages";
 import { removeSecondsFromDate } from "../../utils/remove-seconds-from-date";
 

@@ -4,7 +4,7 @@ import {
     ListItemButton,
     ListItemText,
 } from "@mui/material";
-import Column from "../screen/column";
+import Column from "../screen/column-temp";
 import { ArrowRight } from "@mui/icons-material";
 
 interface MenuListProps {

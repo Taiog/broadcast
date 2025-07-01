@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { useGetConnections } from "../../apps/connections/use-connections";
-import Column from "../screen/column";
+import Column from "../screen/column-temp";
 import { addConnection, deleteConnection, updateConnection } from "../../apps/connections/connection.model";
 
 interface ConnectionListProps {

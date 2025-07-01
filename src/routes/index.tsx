@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/login";
+import Login from "../pages/login-temp";
 import PrivateRoute from "./private-route";
 import PublicRoute from "./public-route";
-import Register from "../pages/register";
+import Register from "../pages/register-temp";
 import BroadcastPage from "../pages/broadcast-page";
 
 function AppRoutes() {

@@ -1,7 +1,7 @@
 import { type PropsWithChildren } from "react";
 import { Grid } from "@mui/material";
-import Header from "../screen/header";
-import Screen from "../screen/screen";
+import Header from "../screen/header-temp";
+import Screen from "../screen/screen-temp";
 
 function AuthenticatedLayout(props: PropsWithChildren) {
     const { children } = props

@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 
-import Screen from "../components/screen/screen";
+import Screen from "../components/screen/screen-temp";
 import { useLogin } from "../hooks/use-login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../schemas/login-schema";
