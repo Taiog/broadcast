@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getConnections, type Connection } from "./connection.model";
+import { getConnections, type Connection } from "./connections.model";
 
 export function useGetConnections(clientId: string) {
   const [connections, setConnections] = useState<Connection[]>([]);

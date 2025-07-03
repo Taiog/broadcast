@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getContacts } from "./contact.model";
+import { getContacts } from "./contacts.model";
 
 export interface Contact {
   id?: string;

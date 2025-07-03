@@ -1,4 +1,4 @@
-import { TextField, type TextFieldProps } from "@mui/material";
+import TextField, { type TextFieldProps } from "@mui/material/TextField";
 import { IMaskMixin } from "react-imask";
 
 export const MaskedTextField = IMaskMixin(

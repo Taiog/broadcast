@@ -1,18 +1,16 @@
-import {
-    Box,
-    Button,
-    Popover,
-    TextField,
-    Typography,
-} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { contactSchema, type ContactFormData } from "../../schemas/contact-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { MaskedTextField } from "./masked-text-field";
-import type { Contact } from "../../apps/contacts/use-contacts";
+import type { Contact } from "../use-contacts";
+import { contactSchema, type ContactFormData } from "../schemas/contact-schema";
+import Popover from "@mui/material/Popover";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import { MaskedTextField } from "../../../components/form/masked-text-field";
+import Button from "@mui/material/Button";
 
-interface Props {
+interface ContactFormPopoverProps {
     anchorEl: HTMLElement | null;
     onClose: () => void;
     onSubmit: (contactData: { name: string; phone: string }) => void;
@@ -20,8 +18,9 @@ interface Props {
     initialData?: Contact | null;
 }
 
-function ContactFormPopover(props: Props) {
+export function ContactFormPopover(props: ContactFormPopoverProps) {
     const { anchorEl, onClose, onSubmit, initialData, mode } = props
+
     const open = Boolean(anchorEl);
 
     const {
@@ -51,7 +50,9 @@ function ContactFormPopover(props: Props) {
 
     const handleFormSubmit = (data: ContactFormData) => {
         const rawPhone = data.phone.replace(/\D/g, "").replace(/^55/, "")
+
         onSubmit({ ...data, phone: rawPhone });
+
         handleClose();
     };
 
@@ -63,6 +64,7 @@ function ContactFormPopover(props: Props) {
             onClose={handleClose}
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
+
             <Box p={2} display="flex" flexDirection="column" minWidth={250}>
                 <Typography variant="subtitle1" mb={1}>
                     {mode === "create" ? "Novo Contato" : "Editar Contato"}
@@ -110,4 +112,3 @@ function ContactFormPopover(props: Props) {
     );
 }
 
-export default ContactFormPopover

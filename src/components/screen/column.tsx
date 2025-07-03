@@ -1,11 +1,15 @@
-import { Box, Divider, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
+import Typography from '@mui/material/Typography'
 import { type PropsWithChildren } from 'react'
 
 interface ColumnProps extends PropsWithChildren {
     title: string
 }
-function Column(props: ColumnProps) {
+
+export function Column(props: ColumnProps) {
     const { title, children } = props
+
     return (
         <Box height="100%" borderRight="1px solid #ccc" overflow="auto" width="100%" display={'flex'} gap={'10px'} flexDirection={'column'}>
             <Typography variant="subtitle1" pt={2} color="black" align="center">
@@ -16,5 +20,3 @@ function Column(props: ColumnProps) {
         </Box>
     )
 }
-
-export default Column

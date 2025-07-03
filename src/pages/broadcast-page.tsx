@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Grid } from "@mui/material";
-import { useAuth } from "../hooks/use-auth";
-import AuthenticatedLayout from "../components/layout/authenticated-layout";
-import ConnectionList from "../components/list/connection-list";
-import ContactsTable from "../components/table/contacts-table";
-import MessagesTable from "../components/table/messages-table";
-import MenuList from "../components/list/menu-list";
+import { useAuth } from "../apps/auth/hooks/use-auth";
+import { AuthenticatedLayout } from "../components/layout/authenticated-layout";
+import { ConnectionList } from "../apps/connections/components/connection-list";
+import { MenuList } from "../components/list/menu-list";
+import { MessagesTable } from "../apps/messages/components/messages-table";
+import { ContactsTable } from "../apps/contacts/components/contacts-table";
+import Grid from "@mui/material/Grid";
 
-function BroadcastPage() {
+export function BroadcastPage() {
     const { user } = useAuth();
+
     const [selectedConnectionId, setSelectedConnectionId] = useState<string | null>(null);
+
     const [selectedOption, setSelectedOption] = useState<"contacts" | "messages">("contacts");
 
     if (!user) return null;
@@ -40,5 +42,3 @@ function BroadcastPage() {
         </AuthenticatedLayout>
     );
 }
-
-export default BroadcastPage

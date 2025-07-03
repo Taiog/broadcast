@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { logoutUser } from "../services/auth";
+import { registerWithEmail } from "../../../services/auth";
 import { FirebaseError } from "firebase/app";
 
-export function useLogout() {
+export function useRegister() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function logout() {
+  async function register(email: string, password: string) {
     setLoading(true);
     setError(null);
 
     try {
-      await logoutUser();
+      await registerWithEmail(email, password);
       return { success: true };
     } catch (err) {
       const firebaseError = err as FirebaseError;
@@ -22,5 +22,9 @@ export function useLogout() {
     }
   }
 
-  return { logout, loading, error };
+  return {
+    register,
+    loading,
+    error,
+  };
 }

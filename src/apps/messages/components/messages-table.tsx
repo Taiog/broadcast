@@ -1,47 +1,47 @@
-import {
-    Box,
-    Button,
-    CircularProgress,
-    IconButton,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    ToggleButton,
-    ToggleButtonGroup,
-    Tooltip,
-    Typography,
-} from "@mui/material";
 import { useState } from "react";
-import { deleteMessage, updateMessage, createMessage, type Message } from "../../apps/messages/message.model";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import dayjs from "dayjs";
-import type { MessageFormData } from "../../schemas/message-schema";
-import { MessageFormPopover } from "../form/message-form-popover";
-import { useContacts } from "../../apps/contacts/use-contacts";
-import Column from "../screen/column";
-import { useMessages } from "../../apps/messages/use-messages";
-import { removeSecondsFromDate } from "../../utils/remove-seconds-from-date";
+import { useContacts } from "../../contacts/use-contacts";
+import { useMessages } from "../use-messages";
+import { createMessage, deleteMessage, updateMessage, type Message } from "../messages.model";
+import Typography from "@mui/material/Typography";
+import type { MessageFormData } from "../schemas/message-schema";
+import { removeSecondsFromDate } from "../../../utils/remove-seconds-from-date";
+import { Column } from "../../../components/screen/column";
+import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import { MessageFormPopover } from "./message-form-popover";
 
-interface Props {
+interface MessagesTableProps {
     clientId: string;
     connectionId: string;
 }
 
-function MessagesTable(props: Props) {
+export function MessagesTable(props: MessagesTableProps) {
     const { clientId, connectionId } = props
+
     const [filter, setFilter] = useState<"all" | "agendada" | "enviada">("all");
 
     const { contacts } = useContacts(clientId, connectionId);
+
     const { messages, error, loading } = useMessages(clientId, connectionId, filter)
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-    const [editData, setEditData] = useState<Message | null>(null);
 
+    const [editData, setEditData] = useState<Message | null>(null);
 
     if (error) return <Typography color="error">{error}</Typography>;
 
@@ -181,4 +181,3 @@ function MessagesTable(props: Props) {
     );
 }
 
-export default MessagesTable

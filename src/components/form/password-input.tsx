@@ -1,15 +1,21 @@
 import { useState } from "react";
-import { IconButton, InputAdornment, FormControl, InputLabel, FormHelperText, OutlinedInput, type OutlinedInputProps } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { type FieldError } from "react-hook-form";
+import OutlinedInput, { type OutlinedInputProps } from "@mui/material/OutlinedInput";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import FormHelperText from "@mui/material/FormHelperText";
 
 interface PasswordInputProps extends Omit<OutlinedInputProps, "error"> {
     label?: string;
     error?: FieldError;
 }
 
-function PasswordInput(props: PasswordInputProps) {
+export function PasswordInput(props: PasswordInputProps) {
     const { label, error, ...rest } = props
+
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -35,5 +41,3 @@ function PasswordInput(props: PasswordInputProps) {
         </FormControl>
     );
 }
-
-export default PasswordInput;

@@ -3,7 +3,7 @@ import {
     type User as FirebaseUser,
 } from "firebase/auth";
 import { createContext, useEffect, useState, type PropsWithChildren } from "react";
-import { auth } from "../services/firebase";
+import { auth } from "../../../services/firebase";
 
 interface AuthContextType {
     user: FirebaseUser | null;

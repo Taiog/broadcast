@@ -1,11 +1,11 @@
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 interface FormTitleProps {
     title: string;
     subtitle: string;
 }
 
-function FormTitle(props: FormTitleProps) {
+export function FormTitle(props: FormTitleProps) {
     const { title, subtitle } = props
 
     return (<div>
@@ -17,5 +17,3 @@ function FormTitle(props: FormTitleProps) {
         </Typography>
     </div>)
 }
-
-export default FormTitle;

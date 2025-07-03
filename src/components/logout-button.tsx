@@ -1,7 +1,7 @@
-import { Button } from "@mui/material";
-import { useLogout } from "../hooks/use-logout";
+import Button from "@mui/material/Button";
+import { useLogout } from "../apps/auth/hooks/use-logout";
 
-function LogoutButton() {
+export function LogoutButton() {
     const { logout, loading } = useLogout();
 
     const handleLogout = async () => {
@@ -21,4 +21,3 @@ function LogoutButton() {
     );
 }
 
-export default LogoutButton;

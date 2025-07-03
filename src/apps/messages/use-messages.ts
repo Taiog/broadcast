@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMessages, type Message } from "./message.model";
+import { getMessages, type Message } from "./messages.model";
 
 export function useMessages(
   clientId: string,

@@ -1,10 +1,13 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
 
-import LogoutButton from "../logout-button";
-import { useAuth } from "../../hooks/use-auth";
+import AppBar from "@mui/material/AppBar";
+import { useAuth } from "../../apps/auth/hooks/use-auth";
+import { LogoutButton } from "../logout-button";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
-function Header() {
+export function Header() {
     const { user } = useAuth()
+
     return (
         <AppBar position="static" color="primary">
             <Toolbar sx={{ justifyContent: "space-between" }}>
@@ -14,5 +17,3 @@ function Header() {
         </AppBar>
     );
 }
-
-export default Header

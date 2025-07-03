@@ -1,19 +1,21 @@
 import { useNavigate, Link } from "react-router-dom";
-import { Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 
-import Screen from "../components/screen/screen";
-import { useLogin } from "../hooks/use-login";
+import { useLogin } from "../apps/auth/hooks/use-login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginFormData } from "../schemas/login-schema";
-import FormTitle from "../components/form/form-title";
-import FormInput from "../components/form/form-input";
-import PasswordInput from "../components/form/password-input";
-import ErrorMessage from "../components/form/error-message";
-import SubmitButton from "../components/form/submit-button";
+import { loginSchema, type LoginFormData } from "../apps/auth/schemas/login-schema";
+import { Screen } from "../components/screen/screen";
+import { FormTitle } from "../components/form/form-title";
+import { FormInput } from "../components/form/form-input";
+import { PasswordInput } from "../components/form/password-input";
+import { ErrorMessage } from "../components/form/error-message";
+import { SubmitButton } from "../components/form/submit-button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
-function Login() {
+export function Login() {
     const navigate = useNavigate();
+
     const { login, error, loading } = useLogin();
 
     const {
@@ -26,6 +28,7 @@ function Login() {
 
     const onSubmit = async (data: LoginFormData) => {
         const result = await login(data.email, data.password);
+
         if (result.success) {
             navigate("/dashboard");
         }
@@ -51,5 +54,3 @@ function Login() {
         </Screen>
     );
 }
-
-export default Login;

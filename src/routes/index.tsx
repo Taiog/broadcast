@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/login";
-import PrivateRoute from "./private-route";
-import PublicRoute from "./public-route";
-import Register from "../pages/register";
-import BroadcastPage from "../pages/broadcast-page";
+import { PublicRoute } from "./public-route";
+import { Login } from "../pages/login";
+import { Register } from "../pages/register";
+import { PrivateRoute } from "./private-route";
+import { BroadcastPage } from "../pages/broadcast-page";
 
-function AppRoutes() {
+export function AppRoutes() {
   return (
     <Routes>
       <Route element={<PublicRoute />}>
@@ -21,5 +21,3 @@ function AppRoutes() {
     </Routes>
   );
 };
-
-export default AppRoutes;

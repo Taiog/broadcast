@@ -1,4 +1,7 @@
-import { FormControl, FormHelperText, InputLabel, OutlinedInput, type OutlinedInputProps } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput, { type OutlinedInputProps } from "@mui/material/OutlinedInput";
 import { type FieldError } from "react-hook-form";
 
 interface FormInputProps extends Omit<OutlinedInputProps, "error"> {
@@ -7,7 +10,7 @@ interface FormInputProps extends Omit<OutlinedInputProps, "error"> {
     error?: FieldError;
 }
 
-function FormInput(props: FormInputProps) {
+export function FormInput(props: FormInputProps) {
     const { label, type, error, ...rest } = props
     return (
         <FormControl variant="outlined">
@@ -25,5 +28,3 @@ function FormInput(props: FormInputProps) {
         </FormControl>
     );
 }
-
-export default FormInput;

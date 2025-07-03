@@ -1,19 +1,20 @@
 import { useNavigate, Link } from "react-router-dom";
-import { Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, type RegisterFormData } from "../apps/auth/schemas/register-schema";
+import { useRegister } from "../apps/auth/hooks/use-register";
+import { Screen } from "../components/screen/screen";
+import { FormTitle } from "../components/form/form-title";
+import { FormInput } from "../components/form/form-input";
+import { PasswordInput } from "../components/form/password-input";
+import { ErrorMessage } from "../components/form/error-message";
+import { SubmitButton } from "../components/form/submit-button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
-import Screen from "../components/screen/screen";
-import FormTitle from "../components/form/form-title";
-import FormInput from "../components/form/form-input";
-import PasswordInput from "../components/form/password-input";
-import ErrorMessage from "../components/form/error-message";
-import SubmitButton from "../components/form/submit-button";
-import { registerSchema, type RegisterFormData } from "../schemas/register-schema";
-import { useRegister } from "../hooks/use-register";
-
-function Register() {
+export function Register() {
     const navigate = useNavigate();
+
     const { register: registerUser, loading, error } = useRegister();
 
     const {
@@ -26,6 +27,7 @@ function Register() {
 
     const onSubmit = async (data: RegisterFormData) => {
         const result = await registerUser(data.email, data.password);
+
         if (result.success) {
             navigate("/dashboard");
         }
@@ -51,5 +53,3 @@ function Register() {
         </Screen>
     );
 }
-
-export default Register;

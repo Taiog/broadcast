@@ -1,22 +1,21 @@
 import { useState } from "react";
-import {
-    Box,
-    TextField,
-    Button,
-    List,
-    ListItem,
-    ListItemText,
-    IconButton,
-    CircularProgress,
-    ListItemButton,
-    Tooltip,
-} from "@mui/material";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { useGetConnections } from "../../apps/connections/use-connections";
-import Column from "../screen/column";
-import { addConnection, deleteConnection, updateConnection } from "../../apps/connections/connection.model";
+import { useGetConnections } from "../use-connections";
+import { addConnection, deleteConnection, updateConnection } from "../connections.model";
+import { Column } from "../../../components/screen/column";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import CircularProgress from "@mui/material/CircularProgress";
+import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+import ListItemButton from "@mui/material/ListItemButton";
+import Tooltip from "@mui/material/Tooltip";
+import ListItemText from "@mui/material/ListItemText";
 
 interface ConnectionListProps {
     clientId: string;
@@ -24,7 +23,7 @@ interface ConnectionListProps {
     selectedConnectionId: string | null;
 }
 
-function ConnectionList(props: ConnectionListProps) {
+export function ConnectionList(props: ConnectionListProps) {
     const { clientId, onSelect, selectedConnectionId } = props
     const { connections, loading, error } = useGetConnections(clientId);
     const [newName, setNewName] = useState("");
@@ -128,4 +127,3 @@ function ConnectionList(props: ConnectionListProps) {
     );
 }
 
-export default ConnectionList

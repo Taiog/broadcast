@@ -1,12 +1,14 @@
-import { Button, CircularProgress } from "@mui/material";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface SubmitButtonProps {
     loading: boolean;
     text: string;
 }
 
-function SubmitButton(props: SubmitButtonProps) {
+export function SubmitButton(props: SubmitButtonProps) {
     const { loading, text } = props
+
     return (
         <Button
             type="submit"
@@ -20,5 +22,3 @@ function SubmitButton(props: SubmitButtonProps) {
         </Button>
     );
 };
-
-export default SubmitButton;

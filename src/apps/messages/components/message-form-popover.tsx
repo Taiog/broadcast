@@ -1,22 +1,21 @@
-import {
-    Box,
-    Button,
-    Popover,
-    TextField,
-    Typography,
-    Autocomplete,
-} from "@mui/material";
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { messageSchema, type MessageFormData } from "../../schemas/message-schema";
+import { messageSchema, type MessageFormData } from "../schemas/message-schema";
 import { useEffect } from "react";
-import type { Contact } from "../../apps/contacts/use-contacts";
-import type { Message } from "../../apps/messages/message.model";
+import type { Contact } from "../../contacts/use-contacts";
+import type { Message } from "../messages.model";
+import Popover from "@mui/material/Popover";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
 
-interface Props {
+interface MessageFormPopoverProps {
     anchorEl: HTMLElement | null;
     onClose: () => void;
     onSubmit: (data: MessageFormData) => void;
@@ -27,7 +26,7 @@ interface Props {
 
 
 
-export function MessageFormPopover(props: Props) {
+export function MessageFormPopover(props: MessageFormPopoverProps) {
     const { anchorEl, contacts, onClose, onSubmit, initialData, mode } = props
     const open = Boolean(anchorEl);
 

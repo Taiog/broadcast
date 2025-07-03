@@ -1,19 +1,19 @@
-import {
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-} from "@mui/material";
-import Column from "../screen/column";
+
 import { ArrowRight } from "@mui/icons-material";
+import { Column } from "../screen/column";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 
 interface MenuListProps {
     selected: "contacts" | "messages" | null;
     onSelect: (option: "contacts" | "messages") => void;
 }
 
-function MenuList(props: MenuListProps) {
+export function MenuList(props: MenuListProps) {
     const { onSelect, selected } = props
+
     return (
         <Column title="Informações">
             <List disablePadding>
@@ -26,7 +26,6 @@ function MenuList(props: MenuListProps) {
                         <ArrowRight className="text-gray-800" />
                     </ListItemButton>
                 </ListItem>
-
                 <ListItem disablePadding>
                     <ListItemButton
                         selected={selected === "messages"}
@@ -40,5 +39,3 @@ function MenuList(props: MenuListProps) {
         </Column>
     );
 }
-
-export default MenuList

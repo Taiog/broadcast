@@ -1,36 +1,38 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Paper,
-    Typography,
-    CircularProgress,
-    Box,
-    IconButton,
-    Button,
-    Tooltip,
-} from "@mui/material";
-import { useContacts, type Contact } from "../../apps/contacts/use-contacts";
-import Column from "../screen/column";
+
+import { useContacts, type Contact } from "../use-contacts";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
-import { addContact, deleteContact, updateContact } from "../../apps/contacts/contact.model";
-import { formatPhone } from "../../utils/format-phone";
-import ContactFormPopover from "../form/contact-form-popover";
+import { addContact, deleteContact, updateContact } from "../contacts.model";
+import { formatPhone } from "../../../utils/format-phone";
+import Typography from "@mui/material/Typography";
+import { Column } from "../../../components/screen/column";
+import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import { ContactFormPopover } from "./contact-form-popover";
 
-interface Props {
+interface ContactsTableProps {
     clientId: string;
     connectionId: string;
 }
 
-function ContactsTable(props: Props) {
+export function ContactsTable(props: ContactsTableProps) {
     const { clientId, connectionId } = props
+
     const { contacts, loading, error } = useContacts(clientId, connectionId);
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
     const [editContact, setEditContact] = useState<Contact | null>(null);
+
     const [mode, setMode] = useState<"create" | "edit">("create");
 
     if (error) return <Typography color="error">{error}</Typography>;
@@ -135,4 +137,3 @@ function ContactsTable(props: Props) {
     );
 }
 
-export default ContactsTable

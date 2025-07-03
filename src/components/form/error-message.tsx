@@ -1,10 +1,10 @@
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 interface ErrorMessageProps {
     message: string | null;
 }
 
-function ErrorMessage(props: ErrorMessageProps) {
+export function ErrorMessage(props: ErrorMessageProps) {
     const { message } = props
     if (!message) return null;
 
@@ -14,5 +14,3 @@ function ErrorMessage(props: ErrorMessageProps) {
         </Typography>
     );
 };
-
-export default ErrorMessage;
