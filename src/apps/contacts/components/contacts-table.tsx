@@ -1,23 +1,20 @@
-
 import { useContacts, type Contact } from "../use-contacts";
-import { Add, Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import { addContact, deleteContact, updateContact } from "../contacts.model";
-import { formatPhone } from "../../../utils/format-phone";
 import Typography from "@mui/material/Typography";
 import { Column } from "../../../components/screen/column";
 import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
-import { ContactFormPopover } from "./contact-form-popover";
+import { ContactsPopover } from "./contacts-popover";
+import { TableHeader } from "../../../components/table/table-header";
+import { ContactsTableRow } from "./contacts-table-row";
+import Add from "@mui/icons-material/Add";
 
 interface ContactsTableProps {
     clientId: string;
@@ -37,13 +34,13 @@ export function ContactsTable(props: ContactsTableProps) {
 
     if (error) return <Typography color="error">{error}</Typography>;
 
-    const handleOpenCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleOpenCreate = (event: React.MouseEvent<HTMLElement>) => {
         setEditContact(null);
         setMode("create");
         setAnchorEl(event.currentTarget);
     };
 
-    const handleOpenEdit = (event: React.MouseEvent<HTMLButtonElement>, contact: Contact) => {
+    const handleOpenEdit = (event: React.MouseEvent<HTMLElement>, contact: Contact) => {
         setEditContact(contact);
         setMode("edit");
         setAnchorEl(event.currentTarget);
@@ -69,16 +66,7 @@ export function ContactsTable(props: ContactsTableProps) {
         <Column title="Contatos">
             {loading ? <CircularProgress sx={{ mt: 2, alignSelf: 'center', width: '100%' }} /> : <Box p={2}>
                 <Paper>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} padding={'6px'}>
-                        <Button
-                            variant="text"
-                            size="small"
-                            startIcon={<Add />}
-                            onClick={handleOpenCreate}
-                        >
-                            Novo contato
-                        </Button>
-                    </Box>
+                    <TableHeader buttonIcon={<Add />} buttonText="Novo contato" handleOpenCreate={handleOpenCreate} />
                     {contacts.length === 0 ? <Typography p={2} color="black" align="center">Nenhum contato encontrado.</Typography> : <Table size="small">
                         <TableHead>
                             <TableRow>
@@ -89,44 +77,13 @@ export function ContactsTable(props: ContactsTableProps) {
                         </TableHead>
                         {<TableBody>
                             {contacts.map((contact) => (
-                                <TableRow key={contact.id}>
-                                    <TableCell>
-                                        <Tooltip title={contact.name}>
-                                            <Typography
-                                                noWrap
-                                                sx={{
-                                                    maxWidth: 200,
-                                                    overflow: "hidden",
-                                                    textOverflow: "ellipsis",
-                                                    whiteSpace: "nowrap",
-                                                }}
-                                            >
-                                                {contact.name.length > 30 ? contact.name.slice(0, 30) + "..." : contact.name}
-                                            </Typography>
-                                        </Tooltip>
-                                    </TableCell>
-                                    <TableCell>{formatPhone(contact.phone)}</TableCell>
-                                    <TableCell align="right">
-                                        <IconButton
-                                            size="small"
-                                            onClick={(e) => handleOpenEdit(e, contact)}
-                                        >
-                                            <Edit />
-                                        </IconButton>
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => contact.id && handleDelete(contact.id)}
-                                        >
-                                            <Delete />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
+                                <ContactsTableRow key={contact.id} contact={contact} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
                             ))}
                         </TableBody>}
                     </Table>}
                 </Paper>
             </Box>}
-            <ContactFormPopover
+            <ContactsPopover
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 onSubmit={handleSubmit}

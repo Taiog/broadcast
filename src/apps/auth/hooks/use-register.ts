@@ -4,6 +4,7 @@ import { FirebaseError } from "firebase/app";
 
 export function useRegister() {
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
   async function register(email: string, password: string) {
@@ -12,10 +13,13 @@ export function useRegister() {
 
     try {
       await registerWithEmail(email, password);
+
       return { success: true };
     } catch (err) {
       const firebaseError = err as FirebaseError;
+
       setError(firebaseError.message);
+
       return { success: false };
     } finally {
       setLoading(false);

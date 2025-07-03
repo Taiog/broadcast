@@ -23,6 +23,7 @@ export function getConnections(
   callback: (contacts: Connection[]) => void
 ): () => void {
   const colRef = collection(db, "clients", clientId, CONNECTIONS_COLLECTION);
+
   const connectionQuery = query(colRef, orderBy("createdAt", "desc"));
 
   const unsubscribe = onSnapshot(connectionQuery, (snapshot) => {
@@ -30,6 +31,7 @@ export function getConnections(
       id: doc.id,
       ...doc.data(),
     })) as Connection[];
+
     callback(data);
   });
 
@@ -38,6 +40,7 @@ export function getConnections(
 
 export async function addConnection(clientId: string, name: string) {
   const colRef = collection(db, "clients", clientId, CONNECTIONS_COLLECTION);
+
   return await addDoc(colRef, {
     name,
     createdAt: new Date(),
@@ -50,10 +53,12 @@ export async function updateConnection(
   data: Partial<Connection>
 ) {
   const docRef = doc(db, "clients", clientId, CONNECTIONS_COLLECTION, connectionId);
+
   await updateDoc(docRef, data);
 }
 
 export async function deleteConnection(clientId: string, connectionId: string) {
   const docRef = doc(db, "clients", clientId, CONNECTIONS_COLLECTION, connectionId);
+
   await deleteDoc(docRef);
 }

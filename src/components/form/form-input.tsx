@@ -12,6 +12,7 @@ interface FormInputProps extends Omit<OutlinedInputProps, "error"> {
 
 export function FormInput(props: FormInputProps) {
     const { label, type, error, ...rest } = props
+
     return (
         <FormControl variant="outlined">
             <InputLabel htmlFor="outlined-adornment-input" error={!!error}>{label}</InputLabel>

@@ -29,6 +29,7 @@ export function getMessages(
   const baseRef = collection(db, "clients", clientId, "connections", connectionId, "messages");
 
   let q;
+
   if (status === "all") {
     q = query(baseRef, orderBy("createdAt", "desc"));
   } else {
@@ -38,6 +39,7 @@ export function getMessages(
   const unsubscribe = onSnapshot(q, (snapshot) => {
     const data: Message[] = snapshot.docs.map((doc) => {
       const message = doc.data();
+
       return {
         id: doc.id,
         text: message.text,
@@ -47,6 +49,7 @@ export function getMessages(
         createdAt: message.createdAt?.toDate(),
       };
     });
+
     callback(data);
   });
 
@@ -59,6 +62,7 @@ export async function createMessage(
   message: Omit<Message, "id" | "createdAt">
 ) {
   const ref = collection(db, "clients", clientId, "connections", connectionId, "messages");
+
   await addDoc(ref, {
     ...message,
     scheduledAt: Timestamp.fromDate(new Date(message.scheduledAt)),
@@ -73,6 +77,7 @@ export async function updateMessage(
   data: Partial<Omit<Message, "id" | "createdAt">>
 ) {
   const ref = doc(db, "clients", clientId, "connections", connectionId, "messages", messageId);
+
   await updateDoc(ref, {
     ...data,
     ...(data.scheduledAt && { scheduledAt: Timestamp.fromDate(new Date(data.scheduledAt)) }),
@@ -81,5 +86,6 @@ export async function updateMessage(
 
 export async function deleteMessage(clientId: string, connectionId: string, messageId: string) {
   const ref = doc(db, "clients", clientId, "connections", connectionId, "messages", messageId);
+
   await deleteDoc(ref);
 }

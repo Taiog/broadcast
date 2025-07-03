@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../apps/auth/hooks/use-auth";
 import { AuthenticatedLayout } from "../components/layout/authenticated-layout";
-import { ConnectionList } from "../apps/connections/components/connection-list";
+import { ConnectionsList } from "../apps/connections/components/connections-list";
 import { MenuList } from "../components/list/menu-list";
 import { MessagesTable } from "../apps/messages/components/messages-table";
 import { ContactsTable } from "../apps/contacts/components/contacts-table";
@@ -19,7 +19,7 @@ export function BroadcastPage() {
     return (
         <AuthenticatedLayout>
             <Grid container size={4} borderRight="1px solid #ccc">
-                <ConnectionList
+                <ConnectionsList
                     clientId={user.uid}
                     selectedConnectionId={selectedConnectionId}
                     onSelect={setSelectedConnectionId}

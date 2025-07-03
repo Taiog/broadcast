@@ -17,6 +17,7 @@ export function getContacts(
   callback: (contacts: Contact[]) => void
 ): () => void {
   const colRef = collection(db, "clients", clientId, "connections", connectionId, "contacts");
+
   const constactsQuery = query(colRef, orderBy("createdAt", "desc"));
 
   const unsubscribe = onSnapshot(constactsQuery, (snapshot) => {
@@ -24,6 +25,7 @@ export function getContacts(
       id: doc.id,
       ...doc.data(),
     })) as Contact[];
+
     callback(data);
   });
 
@@ -37,6 +39,7 @@ export async function addContact(
   phone: string
 ) {
   const colRef = collection(db, "clients", clientId, "connections", connectionId, "contacts");
+
   return await addDoc(colRef, {
     name,
     phone,
@@ -51,10 +54,12 @@ export async function updateContact(
   data: Partial<Contact>
 ) {
   const docRef = doc(db, "clients", clientId, "connections", connectionId, "contacts", contactId);
+
   await updateDoc(docRef, data);
 }
 
 export async function deleteContact(clientId: string, connectionId: string, contactId: string) {
   const docRef = doc(db, "clients", clientId, "connections", connectionId, "contacts", contactId);
+
   await deleteDoc(docRef);
 }

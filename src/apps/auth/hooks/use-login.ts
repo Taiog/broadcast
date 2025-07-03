@@ -4,6 +4,7 @@ import { FirebaseError } from "firebase/app";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
   async function login(email: string, password: string) {
@@ -12,14 +13,17 @@ export function useLogin() {
 
     try {
       await loginWithEmail(email, password);
+
       return { success: true };
     } catch (err) {
       const firebaseError = err as FirebaseError;
+
       setError(
         firebaseError.message.includes("invalid-credential")
           ? "Credenciais inválidas, tente novamente!"
           : firebaseError.message
       );
+
       return { success: false };
     } finally {
       setLoading(false);

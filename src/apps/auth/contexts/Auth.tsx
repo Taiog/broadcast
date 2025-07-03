@@ -17,7 +17,9 @@ const AuthContext = createContext<AuthContextType>({
 
 function AuthContextProvider(props: PropsWithChildren) {
     const { children } = props
+
     const [user, setUser] = useState<FirebaseUser | null>(null);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

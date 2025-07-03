@@ -1,19 +1,14 @@
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import dayjs from "dayjs";
 import { useContacts } from "../../contacts/use-contacts";
 import { useMessages } from "../use-messages";
 import { createMessage, deleteMessage, updateMessage, type Message } from "../messages.model";
 import Typography from "@mui/material/Typography";
-import type { MessageFormData } from "../schemas/message-schema";
+import type { MessageFormData } from "../schemas/messages-schema";
 import { removeSecondsFromDate } from "../../../utils/remove-seconds-from-date";
 import { Column } from "../../../components/screen/column";
 import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import Table from "@mui/material/Table";
@@ -21,9 +16,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import { MessageFormPopover } from "./message-form-popover";
+import { MessagesPopover } from "./messages-popover";
+import { TableHeader } from "../../../components/table/table-header";
+import Add from "@mui/icons-material/Add";
+import { MessagesTableRow } from "./messages-table-row";
 
 interface MessagesTableProps {
     clientId: string;
@@ -45,12 +41,12 @@ export function MessagesTable(props: MessagesTableProps) {
 
     if (error) return <Typography color="error">{error}</Typography>;
 
-    const openCreate = (event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenCreate = (event: React.MouseEvent<HTMLElement>) => {
         setEditData(null);
         setAnchorEl(event.currentTarget);
     };
 
-    const openEdit = (message: Message, event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenEdit = (message: Message, event: React.MouseEvent<HTMLElement>) => {
         setEditData(message);
         setAnchorEl(event.currentTarget);
     };
@@ -74,14 +70,6 @@ export function MessagesTable(props: MessagesTableProps) {
         }
     };
 
-    const getContactNames = (ids: string[]) => {
-        const selected = contacts.filter((c) => ids.includes(c.id!));
-        const names = selected.map((c) => c.name);
-        const first = names[0];
-        const rest = names.slice(1);
-        return { first, rest };
-    };
-
     const handleDelete = async (id: string) => {
         await deleteMessage(clientId, connectionId, id);
     };
@@ -90,23 +78,24 @@ export function MessagesTable(props: MessagesTableProps) {
         <Column title="Mensagens">
             {loading ? <CircularProgress sx={{ mt: 2, alignSelf: 'center', width: '100%' }} /> : <Box p={2}>
                 <Paper>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} padding={'6px'}>
-                        <Button variant="text" size="small" startIcon={<AddIcon />} onClick={openCreate}>
-                            Nova mensagem
-                        </Button>
-                        <ToggleButtonGroup
-                            value={filter}
-                            exclusive
-                            onChange={(_, newFilter) => {
-                                if (newFilter !== null) setFilter(newFilter);
-                            }}
-                            size="small"
-                        >
-                            <ToggleButton value="all">Todas</ToggleButton>
-                            <ToggleButton value="agendada">Agendadas</ToggleButton>
-                            <ToggleButton value="enviada">Enviadas</ToggleButton>
-                        </ToggleButtonGroup>
-                    </Box>
+                    <TableHeader
+                        buttonIcon={<Add />}
+                        buttonText="Nova mensagem"
+                        handleOpenCreate={handleOpenCreate}
+                        rightComponent={
+                            <ToggleButtonGroup
+                                value={filter}
+                                exclusive
+                                onChange={(_, newFilter) => {
+                                    if (newFilter !== null) setFilter(newFilter);
+                                }}
+                                size="small"
+                            >
+                                <ToggleButton value="all">Todas</ToggleButton>
+                                <ToggleButton value="agendada">Agendadas</ToggleButton>
+                                <ToggleButton value="enviada">Enviadas</ToggleButton>
+                            </ToggleButtonGroup>
+                        } />
                     {messages.length === 0 ? (
                         <Typography p={2} color="black" align="center">Nenhuma mensagem encontrada.</Typography>
                     ) : (
@@ -121,54 +110,14 @@ export function MessagesTable(props: MessagesTableProps) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {messages.map((msg) => {
-                                    const { first, rest } = getContactNames(msg.contactIds);
-
-                                    return (
-                                        <TableRow key={msg.id}>
-                                            <TableCell width={'40%'}>
-                                                <Tooltip title={msg.text}>
-                                                    <Typography
-                                                        noWrap
-                                                        sx={{
-                                                            maxWidth: 200,
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                            whiteSpace: "nowrap",
-                                                        }}
-                                                    >
-                                                        {msg.text.length > 30 ? msg.text.slice(0, 30) + "..." : msg.text}
-                                                    </Typography>
-                                                </Tooltip>
-                                            </TableCell>
-                                            <TableCell>
-                                                {first}
-                                                {rest.length > 0 && (
-                                                    <Tooltip title={rest.join(", ")}>
-                                                        <span style={{ cursor: "pointer" }}> +{rest.length}...</span>
-                                                    </Tooltip>
-                                                )}
-                                            </TableCell>
-                                            <TableCell>
-                                                {dayjs(msg.scheduledAt).format("DD/MM/YYYY HH:mm")}
-                                            </TableCell>
-                                            <TableCell>{msg.status}</TableCell>
-                                            <TableCell align="right">
-                                                {msg.status === 'agendada' && <IconButton size="small" onClick={(e) => openEdit(msg, e)}>
-                                                    <EditIcon />
-                                                </IconButton>}
-                                                <IconButton size="small" onClick={() => handleDelete(msg.id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
+                                {messages.map((msg) => (
+                                    <MessagesTableRow key={msg.id} contacts={contacts} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} message={msg} />
+                                ))}
                             </TableBody>
                         </Table>
                     )}
                 </Paper>
-                <MessageFormPopover
+                <MessagesPopover
                     anchorEl={anchorEl}
                     onClose={closePopover}
                     onSubmit={handleSubmit}

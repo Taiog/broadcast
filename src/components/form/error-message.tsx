@@ -6,6 +6,7 @@ interface ErrorMessageProps {
 
 export function ErrorMessage(props: ErrorMessageProps) {
     const { message } = props
+
     if (!message) return null;
 
     return (

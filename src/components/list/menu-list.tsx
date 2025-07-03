@@ -1,5 +1,4 @@
-
-import { ArrowRight } from "@mui/icons-material";
+import ArrowRight from "@mui/icons-material/ArrowRight";
 import { Column } from "../screen/column";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -11,30 +10,33 @@ interface MenuListProps {
     onSelect: (option: "contacts" | "messages") => void;
 }
 
+interface MenuItem {
+    key: "contacts" | "messages";
+    label: string;
+}
+
+const menuItems: MenuItem[] = [
+    { key: "contacts", label: "Contatos" },
+    { key: "messages", label: "Mensagens" },
+];
+
 export function MenuList(props: MenuListProps) {
     const { onSelect, selected } = props
 
     return (
         <Column title="Informações">
             <List disablePadding>
-                <ListItem disablePadding>
-                    <ListItemButton
-                        selected={selected === "contacts"}
-                        onClick={() => onSelect("contacts")}
-                    >
-                        <ListItemText primary="Contatos" className="text-gray-800" />
-                        <ArrowRight className="text-gray-800" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton
-                        selected={selected === "messages"}
-                        onClick={() => onSelect("messages")}
-                    >
-                        <ListItemText primary="Mensagens" className="text-gray-800" />
-                        <ArrowRight className="text-gray-800" />
-                    </ListItemButton>
-                </ListItem>
+                {menuItems.map(({ key, label }) => (
+                    <ListItem key={key} disablePadding>
+                        <ListItemButton
+                            selected={selected === key}
+                            onClick={() => onSelect(key)}
+                        >
+                            <ListItemText primary={label} className="text-gray-800" />
+                            <ArrowRight className="text-gray-800" />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
             </List>
         </Column>
     );

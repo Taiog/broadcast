@@ -7,7 +7,9 @@ export function useMessages(
   filter: "all" | "agendada" | "enviada"
 ) {
   const [messages, setMessages] = useState<Message[]>([]);
+
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

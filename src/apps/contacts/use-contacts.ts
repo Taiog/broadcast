@@ -10,7 +10,9 @@ export interface Contact {
 
 export function useContacts(clientId: string, connectionId: string | null) {
   const [contacts, setContacts] = useState<Contact[]>([]);
+
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

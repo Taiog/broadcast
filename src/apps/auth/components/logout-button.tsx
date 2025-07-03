@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { useLogout } from "../apps/auth/hooks/use-logout";
+import { useLogout } from "../hooks/use-logout";
 
 export function LogoutButton() {
     const { logout, loading } = useLogout();

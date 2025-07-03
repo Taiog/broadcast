@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { type FieldError } from "react-hook-form";
 import OutlinedInput, { type OutlinedInputProps } from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
@@ -7,6 +6,8 @@ import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import FormHelperText from "@mui/material/FormHelperText";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 interface PasswordInputProps extends Omit<OutlinedInputProps, "error"> {
     label?: string;

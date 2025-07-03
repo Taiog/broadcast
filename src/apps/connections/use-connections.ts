@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { getConnections, type Connection } from "./connections.model";
 
-export function useGetConnections(clientId: string) {
+export function useConnections(clientId: string) {
   const [connections, setConnections] = useState<Connection[]>([]);
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

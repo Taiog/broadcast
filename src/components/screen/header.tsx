@@ -1,7 +1,6 @@
-
 import AppBar from "@mui/material/AppBar";
 import { useAuth } from "../../apps/auth/hooks/use-auth";
-import { LogoutButton } from "../logout-button";
+import { LogoutButton } from "../../apps/auth/components/logout-button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 

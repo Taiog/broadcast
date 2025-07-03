@@ -4,6 +4,7 @@ import { FirebaseError } from "firebase/app";
 
 export function useLogout() {
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
   async function logout() {
@@ -12,10 +13,13 @@ export function useLogout() {
 
     try {
       await logoutUser();
+
       return { success: true };
     } catch (err) {
       const firebaseError = err as FirebaseError;
+
       setError(firebaseError.message);
+
       return { success: false };
     } finally {
       setLoading(false);
