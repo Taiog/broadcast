@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { getContacts } from "./contacts.model";
+import { collectionData } from "rxfire/firestore";
+import { collection, orderBy, query } from "firebase/firestore";
+import { db } from "../../services/firebase";
+import { map, type Subscription } from "rxjs";
 
 export interface Contact {
   id?: string;
@@ -10,23 +13,34 @@ export interface Contact {
 
 export function useContacts(clientId: string, connectionId: string | null) {
   const [contacts, setContacts] = useState<Contact[]>([]);
-
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!connectionId) return;
+    if (!clientId || !connectionId) return;
 
     setLoading(true);
     setError(null);
 
-    const unsubscribe = getContacts(clientId, connectionId, (data) => {
-      setContacts(data);
-      setLoading(false);
-    });
+    const ref = collection(db, "clients", clientId, "connections", connectionId, "contacts");
 
-    return () => unsubscribe();
+    const contactsQuery = query(ref, orderBy("createdAt", "desc"));
+
+    const sub: Subscription = collectionData(contactsQuery, { idField: "id" })
+      .pipe(map((docs) => docs as Contact[]))
+      .subscribe({
+        next: (data) => {
+          setContacts(data);
+          setLoading(false);
+        },
+        error: (err) => {
+          console.error(err);
+          setError("Erro ao carregar contatos");
+          setLoading(false);
+        },
+      });
+
+    return () => sub.unsubscribe();
   }, [clientId, connectionId]);
 
   return { contacts, loading, error };

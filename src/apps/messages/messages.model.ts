@@ -1,15 +1,4 @@
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-  query,
-  orderBy,
-  Timestamp,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "../../services/firebase";
 
 export interface Message {
@@ -18,42 +7,7 @@ export interface Message {
   scheduledAt: Date;
   status: "agendada" | "enviada";
   contactIds: string[];
-}
-
-export function getMessages(
-  clientId: string,
-  connectionId: string,
-  status: "enviada" | "agendada" | "all" = "all",
-  callback: (messages: Message[]) => void
-): () => void {
-  const baseRef = collection(db, "clients", clientId, "connections", connectionId, "messages");
-
-  let q;
-
-  if (status === "all") {
-    q = query(baseRef, orderBy("createdAt", "desc"));
-  } else {
-    q = query(baseRef, where("status", "==", status), orderBy("createdAt", "desc"));
-  }
-
-  const unsubscribe = onSnapshot(q, (snapshot) => {
-    const data: Message[] = snapshot.docs.map((doc) => {
-      const message = doc.data();
-
-      return {
-        id: doc.id,
-        text: message.text,
-        contactIds: message.contactIds || [],
-        scheduledAt: message.scheduledAt?.toDate(),
-        status: message.status,
-        createdAt: message.createdAt?.toDate(),
-      };
-    });
-
-    callback(data);
-  });
-
-  return unsubscribe;
+  createdAt: Date;
 }
 
 export async function createMessage(

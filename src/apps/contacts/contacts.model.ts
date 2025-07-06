@@ -1,36 +1,6 @@
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-  query,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import type { Contact } from "./use-contacts";
-
-export function getContacts(
-  clientId: string,
-  connectionId: string,
-  callback: (contacts: Contact[]) => void
-): () => void {
-  const colRef = collection(db, "clients", clientId, "connections", connectionId, "contacts");
-
-  const constactsQuery = query(colRef, orderBy("createdAt", "desc"));
-
-  const unsubscribe = onSnapshot(constactsQuery, (snapshot) => {
-    const data: Contact[] = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Contact[];
-
-    callback(data);
-  });
-
-  return unsubscribe;
-}
 
 export async function addContact(
   clientId: string,
