@@ -7,7 +7,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
 import { Controller, type Control, type FieldErrors } from 'react-hook-form'
-import type { Contact } from '../../contacts/use-contacts'
+import type { Contact } from '../../contacts/contacts.model'
 
 interface MessagesFormProps {
     control: Control<{

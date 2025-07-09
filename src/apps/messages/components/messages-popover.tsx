@@ -2,12 +2,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { messageSchema, type MessageFormData } from "../schemas/messages-schema";
 import { useEffect } from "react";
-import type { Contact } from "../../contacts/use-contacts";
 import type { Message } from "../messages.model";
 import Popover from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { MessagesForm } from "./messages-form";
+import type { Contact } from "../../contacts/contacts.model";
 
 interface MessagesPopoverProps {
     anchorEl: HTMLElement | null;
