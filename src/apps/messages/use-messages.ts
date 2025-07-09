@@ -1,30 +1,37 @@
-import { useEffect, useState } from "react";
-import { getMessages, type Message } from "./messages.model";
+import { useQueryData } from "../../core/hooks/use-query-data";
+import { useAuth } from "../auth/hooks/use-auth";
+import { type Message } from "./messages.model";
+import { orderBy, Timestamp, where } from "firebase/firestore";
 
-export function useMessages(
-  clientId: string,
-  connectionId: string | null,
-  filter: "all" | "agendada" | "enviada"
-) {
-  const [messages, setMessages] = useState<Message[]>([]);
+interface RawMessage extends Omit<Message, "scheduledAt" | "createdAt"> {
+  scheduledAt: Timestamp;
+  createdAt: Timestamp;
+}
 
-  const [loading, setLoading] = useState(true);
+export function useMessages(connectionId: string, filter: "all" | "agendada" | "enviada" = "all") {
+  const { user } = useAuth();
 
-  const [error, setError] = useState<string | null>(null);
+  const messagesQuery = [
+    where("connectionId", "==", connectionId),
+    where("clientId", "==", user?.uid),
+    orderBy("createdAt", "desc"),
+  ];
 
-  useEffect(() => {
-    if (!connectionId) return;
+  if (filter !== "all") {
+    messagesQuery.push(where("status", "==", filter));
+  }
 
-    setLoading(true);
-    setError(null);
+  const { state, loading, error } = useQueryData<RawMessage>(
+    `messages`,
+    [connectionId, filter],
+    messagesQuery
+  );
 
-    const unsubscribe = getMessages(clientId, connectionId, filter, (data: Message[]) => {
-      setMessages(data);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [clientId, connectionId, filter]);
+  const messages = state.map((message) => ({
+    ...message,
+    scheduledAt: message.scheduledAt?.toDate(),
+    createdAt: message.createdAt?.toDate(),
+  }));
 
   return { messages, loading, error };
 }

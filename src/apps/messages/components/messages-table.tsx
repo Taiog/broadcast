@@ -4,7 +4,7 @@ import { useMessages } from "../use-messages";
 import { createMessage, deleteMessage, updateMessage, type Message } from "../messages.model";
 import Typography from "@mui/material/Typography";
 import type { MessageFormData } from "../schemas/messages-schema";
-import { removeSecondsFromDate } from "../../../utils/remove-seconds-from-date";
+import { removeSecondsFromDate } from "../../../core/utils/remove-seconds-from-date";
 import { Column } from "../../../components/screen/column";
 import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
@@ -31,9 +31,9 @@ export function MessagesTable(props: MessagesTableProps) {
 
     const [filter, setFilter] = useState<"all" | "agendada" | "enviada">("all");
 
-    const { contacts } = useContacts(clientId, connectionId);
+    const { contacts } = useContacts(connectionId);
 
-    const { messages, error, loading } = useMessages(clientId, connectionId, filter)
+    const { messages, error, loading } = useMessages(connectionId, filter)
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -56,14 +56,16 @@ export function MessagesTable(props: MessagesTableProps) {
     };
 
     const handleSubmit = async (data: MessageFormData) => {
-        if (editData) {
-            await updateMessage(clientId, connectionId, editData.id, {
+        if (editData?.id) {
+            await updateMessage(editData.id, {
                 ...data,
                 scheduledAt: removeSecondsFromDate(data.scheduledAt),
             });
         } else {
-            await createMessage(clientId, connectionId, {
+            await createMessage({
                 ...data,
+                connectionId,
+                clientId,
                 scheduledAt: removeSecondsFromDate(data.scheduledAt),
                 status: data.status || 'agendada'
             });
@@ -71,7 +73,7 @@ export function MessagesTable(props: MessagesTableProps) {
     };
 
     const handleDelete = async (id: string) => {
-        await deleteMessage(clientId, connectionId, id);
+        await deleteMessage(id);
     };
 
     return (

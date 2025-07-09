@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerWithEmail } from "../../../services/auth";
+import { registerWithEmail } from "../../../core/services/auth";
 import { FirebaseError } from "firebase/app";
 
 export function useRegister() {

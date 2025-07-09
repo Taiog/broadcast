@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { logoutUser } from "../../../services/auth";
+import { logoutUser } from "../../../core/services/auth";
 import { FirebaseError } from "firebase/app";
 
 export function useLogout() {

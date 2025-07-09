@@ -1,6 +1,6 @@
-import { useContacts, type Contact } from "../use-contacts";
+import { useContacts } from "../use-contacts";
 import { useState } from "react";
-import { addContact, deleteContact, updateContact } from "../contacts.model";
+import { addContact, deleteContact, updateContact, type Contact } from "../contacts.model";
 import Typography from "@mui/material/Typography";
 import { Column } from "../../../components/screen/column";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -24,7 +24,7 @@ interface ContactsTableProps {
 export function ContactsTable(props: ContactsTableProps) {
     const { clientId, connectionId } = props
 
-    const { contacts, loading, error } = useContacts(clientId, connectionId);
+    const { contacts, loading, error } = useContacts(connectionId);
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -52,14 +52,14 @@ export function ContactsTable(props: ContactsTableProps) {
 
     const handleSubmit = async (data: { name: string; phone: string }) => {
         if (mode === "create") {
-            await addContact(clientId, connectionId, data.name, data.phone);
+            await addContact({ ...data, connectionId, clientId });
         } else if (editContact?.id) {
-            await updateContact(clientId, connectionId, editContact.id, data);
+            await updateContact(editContact.id, data);
         }
     };
 
     const handleDelete = async (id: string) => {
-        await deleteContact(clientId, connectionId, id);
+        await deleteContact(id);
     };
 
     return (

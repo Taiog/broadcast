@@ -1,33 +1,24 @@
-import { useEffect, useState } from "react";
-import { getContacts } from "./contacts.model";
+import { orderBy, where } from "firebase/firestore";
+import type { Contact } from "./contacts.model";
+import { useQueryData } from "../../core/hooks/use-query-data";
+import { useAuth } from "../auth/hooks/use-auth";
 
-export interface Contact {
-  id?: string;
-  name: string;
-  phone: string;
-  createdAt?: Date;
-}
+export function useContacts(connectionId: string) {
+  const { user } = useAuth();
 
-export function useContacts(clientId: string, connectionId: string | null) {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-
-  const [loading, setLoading] = useState(true);
-
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!connectionId) return;
-
-    setLoading(true);
-    setError(null);
-
-    const unsubscribe = getContacts(clientId, connectionId, (data) => {
-      setContacts(data);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [clientId, connectionId]);
+  const {
+    state: contacts,
+    loading,
+    error,
+  } = useQueryData<Contact>(
+    `contacts`,
+    [connectionId],
+    [
+      where("connectionId", "==", connectionId),
+      where("clientId", "==", user?.uid),
+      orderBy("createdAt", "desc"),
+    ]
+  );
 
   return { contacts, loading, error };
 }

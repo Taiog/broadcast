@@ -1,26 +1,20 @@
-import { useState, useEffect } from "react";
-import { getConnections, type Connection } from "./connections.model";
+import { useQueryData } from "../../core/hooks/use-query-data";
+import { useAuth } from "../auth/hooks/use-auth";
+import { type Connection } from "./connections.model";
+import { orderBy, where } from "firebase/firestore";
 
-export function useConnections(clientId: string) {
-  const [connections, setConnections] = useState<Connection[]>([]);
+export function useConnections() {
+  const { user } = useAuth();
 
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!clientId) return;
-
-    setLoading(true);
-    setError(null);
-
-    const unsubscribe = getConnections(clientId, (data) => {
-      setConnections(data);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [clientId]);
+  const {
+    state: connections,
+    loading,
+    error,
+  } = useQueryData<Connection>(
+    `connections`,
+    [user?.uid],
+    [where("clientId", "==", user?.uid), orderBy("createdAt", "desc")]
+  );
 
   return { connections, loading, error };
 }

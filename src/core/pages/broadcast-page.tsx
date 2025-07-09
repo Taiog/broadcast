@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "../apps/auth/hooks/use-auth";
-import { AuthenticatedLayout } from "../components/layout/authenticated-layout";
-import { ConnectionsList } from "../apps/connections/components/connections-list";
-import { MenuList } from "../components/list/menu-list";
-import { MessagesTable } from "../apps/messages/components/messages-table";
-import { ContactsTable } from "../apps/contacts/components/contacts-table";
+import { useAuth } from "../../apps/auth/hooks/use-auth";
+import { AuthenticatedLayout } from "../../components/layout/authenticated-layout";
+import { ConnectionsList } from "../../apps/connections/components/connections-list";
+import { MenuList } from "../../components/list/menu-list";
+import { MessagesTable } from "../../apps/messages/components/messages-table";
+import { ContactsTable } from "../../apps/contacts/components/contacts-table";
 import Grid from "@mui/material/Grid";
 
 export function BroadcastPage() {

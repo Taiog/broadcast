@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import type { Contact } from "../use-contacts";
 import { contactSchema, type ContactFormData } from "../schemas/contacts-schema";
 import Popover from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { ContactsForm } from "./contacts-form";
+import type { Contact } from "../contacts.model";
 
 interface ContactsPopoverProps {
     anchorEl: HTMLElement | null;
