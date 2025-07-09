@@ -1,8 +1,11 @@
 import { orderBy, where } from "firebase/firestore";
 import type { Contact } from "./contacts.model";
 import { useQueryData } from "../../core/hooks/use-query-data";
+import { useAuth } from "../auth/hooks/use-auth";
 
-export function useContacts(clientId: string, connectionId: string) {
+export function useContacts(connectionId: string) {
+  const { user } = useAuth();
+
   const {
     state: contacts,
     loading,
@@ -12,7 +15,7 @@ export function useContacts(clientId: string, connectionId: string) {
     [connectionId],
     [
       where("connectionId", "==", connectionId),
-      where("clientId", "==", clientId),
+      where("clientId", "==", user?.uid),
       orderBy("createdAt", "desc"),
     ]
   );

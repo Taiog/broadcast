@@ -9,15 +9,8 @@ import { app } from "./firebase";
 
 export const db = getFirestore(app);
 
-export function collection<T>(
-  base: DocumentReference | string,
-  ...pathSegments: string[]
-): CollectionReference<T> {
-  if (typeof base === "string") {
-    return fbCollection(db, base, ...pathSegments) as CollectionReference<T>;
-  }
-
-  return fbCollection(base, "", ...pathSegments) as CollectionReference<T>;
+export function collection<T>(base: string, ...pathSegments: string[]): CollectionReference<T> {
+  return fbCollection(db, base, ...pathSegments) as CollectionReference<T>;
 }
 
 export function doc<T>(path: string, ...pathSegments: string[]): DocumentReference<T> {

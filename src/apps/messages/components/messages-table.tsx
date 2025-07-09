@@ -31,9 +31,9 @@ export function MessagesTable(props: MessagesTableProps) {
 
     const [filter, setFilter] = useState<"all" | "agendada" | "enviada">("all");
 
-    const { contacts } = useContacts(clientId, connectionId);
+    const { contacts } = useContacts(connectionId);
 
-    const { messages, error, loading } = useMessages(connectionId, clientId, filter)
+    const { messages, error, loading } = useMessages(connectionId, filter)
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 

@@ -1,4 +1,5 @@
 import { useQueryData } from "../../core/hooks/use-query-data";
+import { useAuth } from "../auth/hooks/use-auth";
 import { type Message } from "./messages.model";
 import { orderBy, Timestamp, where } from "firebase/firestore";
 
@@ -7,14 +8,12 @@ interface RawMessage extends Omit<Message, "scheduledAt" | "createdAt"> {
   createdAt: Timestamp;
 }
 
-export function useMessages(
-  connectionId: string,
-  clientId: string,
-  filter: "all" | "agendada" | "enviada" = "all"
-) {
+export function useMessages(connectionId: string, filter: "all" | "agendada" | "enviada" = "all") {
+  const { user } = useAuth();
+
   const messagesQuery = [
     where("connectionId", "==", connectionId),
-    where("clientId", "==", clientId),
+    where("clientId", "==", user?.uid),
     orderBy("createdAt", "desc"),
   ];
 
