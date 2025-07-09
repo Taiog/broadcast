@@ -1,21 +1,19 @@
-import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from "firebase/firestore";
-import { db } from "../../services/firebase";
+import { addDoc, updateDoc, deleteDoc, Timestamp } from "firebase/firestore";
+import { collection, doc } from "../../core/services/firestore";
 
 export interface Message {
-  id: string;
+  id?: string;
   text: string;
   scheduledAt: Date;
   status: "agendada" | "enviada";
   contactIds: string[];
-  createdAt: Date;
+  connectionId: string;
+  clientId: string;
+  createdAt?: Date;
 }
 
-export async function createMessage(
-  clientId: string,
-  connectionId: string,
-  message: Omit<Message, "id" | "createdAt">
-) {
-  const ref = collection(db, "clients", clientId, "connections", connectionId, "messages");
+export async function createMessage(message: Message) {
+  const ref = collection<Message>("messages");
 
   await addDoc(ref, {
     ...message,
@@ -24,13 +22,8 @@ export async function createMessage(
   });
 }
 
-export async function updateMessage(
-  clientId: string,
-  connectionId: string,
-  messageId: string,
-  data: Partial<Omit<Message, "id" | "createdAt">>
-) {
-  const ref = doc(db, "clients", clientId, "connections", connectionId, "messages", messageId);
+export async function updateMessage(messageId: string, data: Partial<Message>) {
+  const ref = doc<Message>("messages", messageId);
 
   await updateDoc(ref, {
     ...data,
@@ -38,8 +31,8 @@ export async function updateMessage(
   });
 }
 
-export async function deleteMessage(clientId: string, connectionId: string, messageId: string) {
-  const ref = doc(db, "clients", clientId, "connections", connectionId, "messages", messageId);
+export async function deleteMessage(messageId: string) {
+  const ref = doc<Message>("messages", messageId);
 
   await deleteDoc(ref);
 }

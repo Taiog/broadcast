@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
+import { useQueryData } from "../../core/hooks/use-query-data";
 import { type Message } from "./messages.model";
-import { collection, orderBy, query, Timestamp, where } from "firebase/firestore";
-import { db } from "../../services/firebase";
-import { map, type Subscription } from "rxjs";
-import { collectionData } from "rxfire/firestore";
+import { orderBy, Timestamp, where } from "firebase/firestore";
 
 interface RawMessage extends Omit<Message, "scheduledAt" | "createdAt"> {
   scheduledAt: Timestamp;
@@ -11,53 +8,31 @@ interface RawMessage extends Omit<Message, "scheduledAt" | "createdAt"> {
 }
 
 export function useMessages(
+  connectionId: string,
   clientId: string,
-  connectionId: string | null,
   filter: "all" | "agendada" | "enviada" = "all"
 ) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const messagesQuery = [
+    where("connectionId", "==", connectionId),
+    where("clientId", "==", clientId),
+    orderBy("createdAt", "desc"),
+  ];
 
-  const [loading, setLoading] = useState(true);
+  if (filter !== "all") {
+    messagesQuery.push(where("status", "==", filter));
+  }
 
-  const [error, setError] = useState<string | null>(null);
+  const { state, loading, error } = useQueryData<RawMessage>(
+    `messages`,
+    [connectionId, filter],
+    messagesQuery
+  );
 
-  useEffect(() => {
-    if (!connectionId) return;
-
-    setLoading(true);
-    setError(null);
-
-    const ref = collection(db, "clients", clientId, "connections", connectionId, "messages");
-
-    let messagesQuery;
-
-    if (filter === "all") {
-      messagesQuery = query(ref, orderBy("createdAt", "desc"));
-    } else {
-      messagesQuery = query(ref, where("status", "==", filter), orderBy("createdAt", "desc"));
-    }
-
-    const sub: Subscription = collectionData(messagesQuery, { idField: "id" })
-      .pipe(map((docs) => docs as RawMessage[]))
-      .subscribe({
-        next: (data) => {
-          const normalizedData = data.map((message) => ({
-            ...message,
-            scheduledAt: message.scheduledAt?.toDate(),
-            createdAt: message.createdAt?.toDate(),
-          }));
-          setMessages(normalizedData);
-          setLoading(false);
-        },
-        error: (err) => {
-          console.error(err);
-          setError("Erro ao carregar mensagens");
-          setLoading(false);
-        },
-      });
-
-    return () => sub.unsubscribe();
-  }, [clientId, connectionId, filter]);
+  const messages = state.map((message) => ({
+    ...message,
+    scheduledAt: message.scheduledAt?.toDate(),
+    createdAt: message.createdAt?.toDate(),
+  }));
 
   return { messages, loading, error };
 }

@@ -4,10 +4,10 @@ import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import type { Contact } from "../../contacts/use-contacts";
 import type { Message } from "../messages.model";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
+import type { Contact } from "../../contacts/contacts.model";
 
 interface MessagesTableRowProps {
     message: Message
@@ -65,7 +65,7 @@ export function MessagesTableRow(props: MessagesTableRowProps) {
                 {message.status === 'agendada' && <IconButton size="small" onClick={(e) => handleOpenEdit(message, e)}>
                     <Edit />
                 </IconButton>}
-                <IconButton size="small" onClick={() => handleDelete(message.id)}>
+                <IconButton size="small" onClick={() => handleDelete(message.id!)}>
                     <Delete />
                 </IconButton>
             </TableCell>

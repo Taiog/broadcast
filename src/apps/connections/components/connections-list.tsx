@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useConnections } from "../use-connections";
 import { addConnection, deleteConnection, updateConnection } from "../connections.model";
 import { Column } from "../../../components/screen/column";
 import Box from "@mui/material/Box";
@@ -7,6 +6,7 @@ import List from "@mui/material/List";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ConnectionsListInput } from "./connections-list-input";
 import { ConnectionsListItem } from "./connections-list-item";
+import { useConnections } from "../use-connections";
 
 interface ConnectionsListProps {
     clientId: string;
@@ -32,7 +32,7 @@ export function ConnectionsList(props: ConnectionsListProps) {
     };
 
     const handleDelete = async (id: string) => {
-        await deleteConnection(clientId, id);
+        await deleteConnection(id);
         onSelect(null)
     };
 
@@ -43,7 +43,7 @@ export function ConnectionsList(props: ConnectionsListProps) {
 
     const handleEditSave = async () => {
         if (!editName.trim() || !editId) return;
-        await updateConnection(clientId, editId, { name: editName.trim() });
+        await updateConnection(editId, { name: editName.trim() });
         setEditId(null);
         setEditName("");
     };
