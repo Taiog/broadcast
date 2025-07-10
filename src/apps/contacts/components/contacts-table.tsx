@@ -24,7 +24,7 @@ interface ContactsTableProps {
 export function ContactsTable(props: ContactsTableProps) {
     const { clientId, connectionId } = props
 
-    const { contacts, loading, error } = useContacts(connectionId);
+    const { state: contacts, loading, error } = useContacts(clientId, connectionId);
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 

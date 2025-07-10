@@ -1,20 +1,6 @@
-import { useQueryData } from "../../core/hooks/use-query-data";
-import { useAuth } from "../auth/hooks/use-auth";
-import { type Connection } from "./connections.model";
-import { orderBy, where } from "firebase/firestore";
+import { useObservable } from "../../core/hooks/use-observable";
+import { getClientConnections$, type Connection } from "./connections.model";
 
-export function useConnections() {
-  const { user } = useAuth();
-
-  const {
-    state: connections,
-    loading,
-    error,
-  } = useQueryData<Connection>(
-    `connections`,
-    [user?.uid],
-    [where("clientId", "==", user?.uid), orderBy("createdAt", "desc")]
-  );
-
-  return { connections, loading, error };
+export function useConnections(clientId: string) {
+  return useObservable<Connection>(() => getClientConnections$(clientId), [clientId]);
 }

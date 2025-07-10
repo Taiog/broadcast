@@ -16,7 +16,7 @@ interface ConnectionsListProps {
 
 export function ConnectionsList(props: ConnectionsListProps) {
     const { onSelect, clientId, selectedConnectionId } = props
-    const { connections, loading, error } = useConnections();
+    const { state: connections, loading, error } = useConnections(clientId);
 
     const [newName, setNewName] = useState("");
 
