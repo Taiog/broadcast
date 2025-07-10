@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useContacts } from "../../contacts/use-contacts";
 import { useMessages } from "../use-messages";
-import { createMessage, deleteMessage, updateMessage, type Message, type MessageStatus } from "../messages.model";
+import { createMessage, deleteMessage, updateMessage, type Message } from "../messages.model";
 import Typography from "@mui/material/Typography";
 import type { MessageFormData } from "../schemas/messages-schema";
 import { removeSecondsFromDate } from "../../../core/utils/remove-seconds-from-date";
