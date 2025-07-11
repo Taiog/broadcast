@@ -4,19 +4,18 @@ import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import type { Message } from "../messages.model";
+import { deleteMessage, type Message } from "../messages.model";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import type { Contact } from "../../contacts/contacts.model";
+import { openMessagesAlertDialog, openMessagesDialog } from "./messages-facade";
 
 interface MessagesTableRowProps {
     message: Message
     contacts: Contact[]
-    handleOpenEdit: (message: Message, event: React.MouseEvent<HTMLElement>) => void
-    handleDelete: (id: string) => Promise<void>
 }
 export function MessagesTableRow(props: MessagesTableRowProps) {
-    const { message, contacts, handleDelete, handleOpenEdit } = props
+    const { message, contacts } = props
 
     const getContactNames = (ids: string[]) => {
         const selected = contacts.filter((contact) => ids.includes(contact.id!));
@@ -62,10 +61,10 @@ export function MessagesTableRow(props: MessagesTableRowProps) {
             </TableCell>
             <TableCell>{message.status}</TableCell>
             <TableCell align="right">
-                {message.status === 'agendada' && <IconButton size="small" onClick={(e) => handleOpenEdit(message, e)}>
+                {message.status === 'agendada' && <IconButton size="small" onClick={() => openMessagesDialog('edit', message.connectionId, message.clientId, contacts, message)}>
                     <Edit />
                 </IconButton>}
-                <IconButton size="small" onClick={() => handleDelete(message.id!)}>
+                <IconButton size="small" onClick={() => openMessagesAlertDialog(() => deleteMessage(message?.id!))}>
                     <Delete />
                 </IconButton>
             </TableCell>

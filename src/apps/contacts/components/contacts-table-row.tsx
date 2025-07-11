@@ -6,16 +6,15 @@ import Typography from '@mui/material/Typography'
 import { formatPhone } from '../../../core/utils/format-phone'
 import Edit from '@mui/icons-material/Edit'
 import Delete from '@mui/icons-material/Delete'
-import type { Contact } from '../contacts.model'
+import { deleteContact, type Contact } from '../contacts.model'
+import { openContactsAlertDialog, openContactsDialog } from './contacts-facade'
 
 interface ContactsTableRowProps {
     contact: Contact
-    handleOpenEdit: (event: React.MouseEvent<HTMLButtonElement>, contact: Contact) => void
-    handleDelete: (id: string) => Promise<void>
 }
 
 export function ContactsTableRow(props: ContactsTableRowProps) {
-    const { contact, handleDelete, handleOpenEdit } = props
+    const { contact } = props
 
     return (
         <TableRow>
@@ -38,13 +37,13 @@ export function ContactsTableRow(props: ContactsTableRowProps) {
             <TableCell align="right">
                 <IconButton
                     size="small"
-                    onClick={(e) => handleOpenEdit(e, contact)}
+                    onClick={() => openContactsDialog('edit', contact.connectionId, contact.clientId, contact)}
                 >
                     <Edit />
                 </IconButton>
                 <IconButton
                     size="small"
-                    onClick={() => contact.id && handleDelete(contact.id)}
+                    onClick={() => openContactsAlertDialog(() => deleteContact(contact.id!))}
                 >
                     <Delete />
                 </IconButton>

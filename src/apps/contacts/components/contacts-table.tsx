@@ -1,6 +1,4 @@
 import { useContacts } from "../use-contacts";
-import { useState } from "react";
-import { addContact, deleteContact, updateContact, type Contact } from "../contacts.model";
 import Typography from "@mui/material/Typography";
 import { Column } from "../../../components/screen/column";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -11,10 +9,10 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
-import { ContactsPopover } from "./contacts-popover";
 import { TableHeader } from "../../../components/table/table-header";
 import { ContactsTableRow } from "./contacts-table-row";
 import Add from "@mui/icons-material/Add";
+import { openContactsDialog } from "./contacts-facade";
 
 interface ContactsTableProps {
     clientId: string;
@@ -26,47 +24,15 @@ export function ContactsTable(props: ContactsTableProps) {
 
     const { state: contacts, loading, error } = useContacts(clientId, connectionId);
 
-    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-    const [editContact, setEditContact] = useState<Contact | null>(null);
-
-    const [mode, setMode] = useState<"create" | "edit">("create");
-
     if (error) return <Typography color="error">{error}</Typography>;
-
-    const handleOpenCreate = (event: React.MouseEvent<HTMLElement>) => {
-        setEditContact(null);
-        setMode("create");
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleOpenEdit = (event: React.MouseEvent<HTMLElement>, contact: Contact) => {
-        setEditContact(contact);
-        setMode("edit");
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleSubmit = async (data: { name: string; phone: string }) => {
-        if (mode === "create") {
-            await addContact({ ...data, connectionId, clientId });
-        } else if (editContact?.id) {
-            await updateContact(editContact.id, data);
-        }
-    };
-
-    const handleDelete = async (id: string) => {
-        await deleteContact(id);
-    };
 
     return (
         <Column title="Contatos">
             {loading ? <CircularProgress sx={{ mt: 2, alignSelf: 'center', width: '100%' }} /> : <Box p={2}>
                 <Paper>
-                    <TableHeader buttonIcon={<Add />} buttonText="Novo contato" handleOpenCreate={handleOpenCreate} />
+                    <TableHeader buttonIcon={<Add />} buttonText="Novo contato" handleOpenCreate={() => {
+                        openContactsDialog('create', connectionId, clientId)
+                    }} />
                     {contacts.length === 0 ? <Typography p={2} color="black" align="center">Nenhum contato encontrado.</Typography> : <Table size="small">
                         <TableHead>
                             <TableRow>
@@ -77,19 +43,12 @@ export function ContactsTable(props: ContactsTableProps) {
                         </TableHead>
                         {<TableBody>
                             {contacts.map((contact) => (
-                                <ContactsTableRow key={contact.id} contact={contact} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
+                                <ContactsTableRow key={contact.id} contact={contact} />
                             ))}
                         </TableBody>}
                     </Table>}
                 </Paper>
             </Box>}
-            <ContactsPopover
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                onSubmit={handleSubmit}
-                mode={mode}
-                initialData={editContact}
-            />
         </Column>
     );
 }

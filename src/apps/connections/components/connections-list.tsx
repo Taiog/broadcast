@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { addConnection, deleteConnection, updateConnection } from "../connections.model";
 import { Column } from "../../../components/screen/column";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import CircularProgress from "@mui/material/CircularProgress";
-import { ConnectionsListInput } from "./connections-list-input";
 import { ConnectionsListItem } from "./connections-list-item";
 import { useConnections } from "../use-connections";
+import Button from "@mui/material/Button";
+import Add from "@mui/icons-material/Add";
+import { openConnectionsDialog } from "./connections-facade";
 
 interface ConnectionsListProps {
     clientId: string;
@@ -18,59 +18,23 @@ export function ConnectionsList(props: ConnectionsListProps) {
     const { onSelect, clientId, selectedConnectionId } = props
     const { state: connections, loading, error } = useConnections(clientId);
 
-    const [newName, setNewName] = useState("");
-
-    const [editId, setEditId] = useState<string | null>(null);
-
-    const [editName, setEditName] = useState("");
-
-    const handleAdd = async () => {
-        if (!newName.trim()) return;
-        await addConnection(clientId, newName.trim());
-        setNewName("");
-    };
-
-    const handleDelete = async (id: string) => {
-        await deleteConnection(id);
-        onSelect(null)
-    };
-
-    const handleEditStart = (id: string, name: string) => {
-        setEditId(id);
-        setEditName(name);
-    };
-
-    const handleEditSave = async () => {
-        if (!editName.trim() || !editId) return;
-        await updateConnection(editId, { name: editName.trim() });
-        setEditId(null);
-        setEditName("");
-    };
-
     if (error) return <Box color="error.main">{error}</Box>;
 
     return (
         <Column title="Selecione uma conexão">
-            <ConnectionsListInput
-                value={newName}
-                onChange={setNewName}
-                onAdd={handleAdd}
-            />
+            <Box >
+                <Button variant="text" onClick={() => openConnectionsDialog('create', clientId)}>
+                    <Add />
+                    Adicionar conexão
+                </Button>
+            </Box>
             {loading ? <CircularProgress /> : <List disablePadding>
-                {connections.map(({ id, name }) => (
+                {connections.map((connection) => (
                     <ConnectionsListItem
-                        key={id}
-                        id={id!}
-                        name={name}
-                        selected={id === selectedConnectionId}
-                        isEditing={id === editId}
-                        editName={editName}
+                        key={connection.id}
+                        connection={connection}
+                        selected={connection.id === selectedConnectionId}
                         onSelect={onSelect}
-                        onEditStart={handleEditStart}
-                        onEditChange={setEditName}
-                        onEditCancel={() => setEditId(null)}
-                        onEditSave={handleEditSave}
-                        onDelete={handleDelete}
                     />
                 ))}
             </List>}

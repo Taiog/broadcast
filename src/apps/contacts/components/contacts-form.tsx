@@ -1,8 +1,7 @@
 import TextField from '@mui/material/TextField'
 import { Controller, type Control, type FieldErrors } from 'react-hook-form'
 import { MaskedTextField } from '../../../components/form/masked-text-field'
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
+import Box from '@mui/material/Box';
 
 interface ContactsFormProps {
     control: Control<{
@@ -13,14 +12,13 @@ interface ContactsFormProps {
         name: string;
         phone: string;
     }>
-    mode?: "create" | "edit";
 }
 
 export function ContactsForm(props: ContactsFormProps) {
-    const { control, errors, mode } = props
+    const { control, errors } = props
 
     return (
-        <>
+        <Box display="flex" flexDirection="column" minWidth={250}>
             <Controller name="name" control={control} render={({ field }) => (
                 <TextField
                     {...field}
@@ -49,16 +47,6 @@ export function ContactsForm(props: ContactsFormProps) {
                     />
                 )}
             />
-
-            <Box mt={2}>
-                <Button
-                    variant="contained"
-                    type="submit"
-                    fullWidth
-                >
-                    {mode === "create" ? "Adicionar" : "Salvar"}
-                </Button>
-            </Box>
-        </>
+        </Box>
     )
 }

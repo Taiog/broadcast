@@ -1,6 +1,5 @@
 import Autocomplete from '@mui/material/Autocomplete'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
@@ -23,15 +22,14 @@ interface MessagesFormProps {
         status?: "agendada" | "enviada";
     }>
     contacts: Contact[]
-    mode?: "create" | "edit";
-    handleSendNow: (e?: React.BaseSyntheticEvent) => Promise<void>
 }
 
 export function MessagesForm(props: MessagesFormProps) {
-    const { contacts, control, errors, mode, handleSendNow } = props
+    const { contacts, control, errors } = props
 
     return (
-        <>
+        <Box display="flex" flexDirection="column" minWidth={300}>
+
             <Controller
                 name="text"
                 control={control}
@@ -98,21 +96,7 @@ export function MessagesForm(props: MessagesFormProps) {
                     </LocalizationProvider>
                 )}
             />
+        </Box>
 
-            <Box mt={2} display={'flex'} gap={'6px'} flexDirection={'column'}>
-                <Button type="submit" variant="contained" fullWidth>
-                    {mode === "create" ? "Agendar" : "Salvar"}
-                </Button>
-                {mode === "create" && (
-                    <Button
-                        variant="outlined"
-                        fullWidth
-                        onClick={handleSendNow}
-                    >
-                        Enviar agora
-                    </Button>
-                )}
-            </Box>
-        </>
     )
 }
